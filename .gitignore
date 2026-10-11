@@ -1,0 +1,24 @@
+# Resultados de la compilación (latexmk los escribe en build/)
+build/
+
+# Auxiliares de LaTeX, por si se compila fuera de build/
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.xdv
+
+# El PDF se publica en las versiones (Releases), no dentro del repositorio
+*.pdf
+
+# Metadatos que Windows añade al copiar archivos a WSL (capítulo 2 de la guía)
+*:Zone.Identifier
+
+# Editores y sistema operativo
+.vscode/
+*~
+.DS_Store
+Thumbs.db

@@ -1,0 +1,6 @@
+# Finales de línea LF en el repositorio: Bash falla con scripts en CRLF
+# (capítulo 2 de la guía, «Finales de línea»).
+* text=auto eol=lf
+*.pdf binary
+*.png binary
+*.jpg binary
