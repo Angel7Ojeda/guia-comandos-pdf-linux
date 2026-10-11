@@ -567,18 +567,18 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Acceder a archivos de Windows desde Ubuntu}
 	
 	\begin{lstlisting}
-		cd /mnt/c/Users/NOMBRE/Downloads     # ir a Descargas de Windows
-		pwd                                  # mostrar dónde está
-		ls -l                                # listar con detalles
-		ls -l *.pdf                          # listar solo los PDF
+cd /mnt/c/Users/NOMBRE/Downloads     # ir a Descargas de Windows
+pwd                                  # mostrar dónde está
+ls -l                                # listar con detalles
+ls -l *.pdf                          # listar solo los PDF
 \end{lstlisting}
 	
 	Si usa a menudo la misma carpeta de Windows, cree un \textbf{enlace simbólico} (un acceso directo de Linux) en su carpeta personal:
 	\newpage
 	
 	\begin{lstlisting}
-		ln -s /mnt/c/Users/NOMBRE/Downloads ~/descargas
-		cd ~/descargas          # ahora es equivalente a la ruta larga
+ln -s /mnt/c/Users/NOMBRE/Downloads ~/descargas
+cd ~/descargas          # ahora es equivalente a la ruta larga
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
@@ -587,9 +587,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Desde Windows, los archivos de Ubuntu están en la ruta de red \arch{\bs\bs{}\allowbreak{}wsl.localhost\bs{}\allowbreak{}Ubuntu\bs{}\allowbreak{}home\bs{}\allowbreak{}USUARIO} (el nombre de la distribución puede variar: compruébelo en PowerShell con \cmd{wsl -l -v}). Desde la propia terminal de Ubuntu hay dos atajos muy útiles:
 	
 	\begin{lstlisting}
-		explorer.exe .  # abre la carpeta actual en el Explorador
-		# abre un archivo con su programa de Windows
-		explorer.exe "$(wslpath -w ~/trabajo/salida.pdf)"
+explorer.exe .  # abre la carpeta actual en el Explorador
+# abre un archivo con su programa de Windows
+explorer.exe "$(wslpath -w ~/trabajo/salida.pdf)"
 \end{lstlisting}
 	
 	\necesitaespacio{18\baselineskip}
@@ -606,9 +606,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-  wslpath 'C:\Users\NOMBRE\Downloads'       # -> /mnt/c/Users/NOMBRE/Downloads
-  wslpath -w ~/trabajo  # -> \\wsl.localhost\Ubuntu\home\USUARIO\trabajo
-  cd "$(wslpath 'C:\Users\NOMBRE\Mis Documentos')"  # cd con ruta copiada de Windows
+wslpath 'C:\Users\NOMBRE\Downloads'       # -> /mnt/c/Users/NOMBRE/Downloads
+wslpath -w ~/trabajo  # -> \\wsl.localhost\Ubuntu\home\USUARIO\trabajo
+cd "$(wslpath 'C:\Users\NOMBRE\Mis Documentos')"  # cd con ruta copiada de Windows
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
@@ -620,10 +620,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\newpage
 	
 	\begin{lstlisting}
-		mkdir -p ~/trabajo/entrada ~/trabajo/salida
-		cp /mnt/c/Users/NOMBRE/Downloads/*.pdf ~/trabajo/entrada/
-		# ... procesar dentro de ~/trabajo ...
-		cp ~/trabajo/salida/* /mnt/c/Users/NOMBRE/Downloads/
+mkdir -p ~/trabajo/entrada ~/trabajo/salida
+cp /mnt/c/Users/NOMBRE/Downloads/*.pdf ~/trabajo/entrada/
+# ... procesar dentro de ~/trabajo ...
+cp ~/trabajo/salida/* /mnt/c/Users/NOMBRE/Downloads/
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
@@ -638,8 +638,8 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\paragraph{Archivos \texttt{Zone.Identifier}} Al copiar archivos con el Explorador de Windows hacia carpetas de Ubuntu pueden aparecer archivos acompañantes con nombres como \arch{informe.pdf:Zone.Identifier}. No son documentos: son metadatos de origen de Windows. Molestan en los procesos por lotes que recorren \emph{todos} los archivos de una carpeta (por ejemplo, el comando \cmd{marker}). Para localizarlos y, tras revisarlos, borrarlos:
 	
 	\begin{lstlisting}
-	find ~/trabajo -name '*:Zone.Identifier'           # 1) revisar la lista
-	find ~/trabajo -name '*:Zone.Identifier' -delete   # 2) borrar (irreversible)
+find ~/trabajo -name '*:Zone.Identifier'           # 1) revisar la lista
+find ~/trabajo -name '*:Zone.Identifier' -delete   # 2) borrar (irreversible)
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
@@ -648,19 +648,19 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	WSL2 asigna a Ubuntu solo una parte de la memoria del equipo (por defecto, una fracción de la RAM total de Windows). Las herramientas pesadas (Marker, OCRmyPDF con muchos procesos, ImageMagick con imágenes enormes) pueden quedarse sin memoria aunque Windows tenga RAM libre. Compruebe los recursos reales desde Ubuntu:
 	
 	\begin{lstlisting}
-		free -h      # memoria total, usada y disponible dentro de WSL2
-		nproc        # número de procesadores visibles
-		df -h ~      # espacio libre en el disco de Linux
+free -h      # memoria total, usada y disponible dentro de WSL2
+nproc        # número de procesadores visibles
+df -h ~      # espacio libre en el disco de Linux
 \end{lstlisting}
 	
 	Para cambiar los límites, cree o edite en Windows el archivo \arch{\%UserProfile\%\bs{}\allowbreak{}.wslconfig} (es decir, \arch{C:\bs{}\allowbreak{}Users\bs{}\allowbreak{}NOMBRE\bs{}\allowbreak{}.wslconfig}) y reinicie WSL con \cmd{wsl -{}-shutdown} desde PowerShell. También puede hacerse desde la aplicación «Configuración de WSL» de Windows.
 	\newpage
 	
 	\begin{lstlisting}[style=salida]
-										[wsl2]
-										memory=8GB
-										processors=4
-										swap=4GB
+[wsl2]
+memory=8GB
+processors=4
+swap=4GB
 \end{lstlisting}
 	
 	\begin{advertencia}
@@ -693,14 +693,14 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Bash separa los argumentos por espacios. Un nombre como \arch{Mis Documentos} se interpretaría como \emph{dos} argumentos (\arch{Mis} y \arch{Documentos}) si no se protege. Hay tres formas de protegerlo:
 	
 	\begin{lstlisting}
-		# 1) Comillas dobles: la forma más habitual
-		pdfinfo "/mnt/c/Users/NOMBRE/Mis Documentos/informe final.pdf"
-		
-		# 2) Barra invertida delante de cada espacio
-		pdfinfo /mnt/c/Users/NOMBRE/Mis\ Documentos/informe\ final.pdf
-		
-		# 3) Comillas simples: protegen TODO, también $ y \
-		pdfinfo '/mnt/c/Users/NOMBRE/Mis Documentos/informe final.pdf'
+# 1) Comillas dobles: la forma más habitual
+pdfinfo "/mnt/c/Users/NOMBRE/Mis Documentos/informe final.pdf"
+
+# 2) Barra invertida delante de cada espacio
+pdfinfo /mnt/c/Users/NOMBRE/Mis\ Documentos/informe\ final.pdf
+
+# 3) Comillas simples: protegen TODO, también $ y \
+pdfinfo '/mnt/c/Users/NOMBRE/Mis Documentos/informe final.pdf'
 \end{lstlisting}
 	
 	\begingroup\small
@@ -727,9 +727,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\paragraph{Rutas largas} Guarde las rutas en variables, entre comillas, y úselas siempre entre comillas dobles:
 	
 	\begin{lstlisting}
-	ORIGEN="/mnt/c/Users/NOMBRE/OneDrive/Documentos/Congreso 2026/Presentación"
-	ls "$ORIGEN"
-	pdfinfo "$ORIGEN/Presentación final.pdf"
+ORIGEN="/mnt/c/Users/NOMBRE/OneDrive/Documentos/Congreso 2026/Presentación"
+ls "$ORIGEN"
+pdfinfo "$ORIGEN/Presentación final.pdf"
 \end{lstlisting}
 	
 	\begin{consejo}
@@ -755,9 +755,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Instalación con \texttt{apt}}
 	
 	\begin{lstlisting}
-	sudo apt update
-	sudo apt install poppler-utils img2pdf imagemagick potrace pandoc qpdf \
-	ocrmypdf tesseract-ocr-spa ghostscript unpaper pngquant jbig2
+sudo apt update
+sudo apt install poppler-utils img2pdf imagemagick potrace pandoc qpdf \
+    ocrmypdf tesseract-ocr-spa ghostscript unpaper pngquant jbig2
 \end{lstlisting}
 	
 	\cmd{sudo} ejecuta la orden con permisos de administrador (pide su contraseña de Linux, que no se ve al escribirla). La barra invertida al final de la primera línea de \cmd{apt install} solo continúa el comando en la línea siguiente.
@@ -789,10 +789,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Para que Pandoc genere PDF a través de LaTeX (y para compilar esta guía):
 	
 	\begin{lstlisting}
-		sudo apt install texlive-latex-recommended texlive-latex-extra \
-		texlive-fonts-recommended texlive-lang-spanish lmodern latexmk
-		# opcional: motor xelatex (Unicode y fuentes del sistema)
-		sudo apt install texlive-xetex
+sudo apt install texlive-latex-recommended texlive-latex-extra \
+    texlive-fonts-recommended texlive-lang-spanish lmodern latexmk
+# opcional: motor xelatex (Unicode y fuentes del sistema)
+sudo apt install texlive-xetex
 \end{lstlisting}
 	
 	\begin{nota}[Paquetes recomendados]
@@ -811,10 +811,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Las alternativas correctas son un entorno virtual (lo que usa Marker) o \cmd{pipx}:
 	
 	\begin{lstlisting}
-	sudo apt install pipx
-	pipx ensurepath  # añade ~/.local/bin al PATH (abra una terminal nueva después)
-	pipx install ocrmypdf    # ejemplo: versión de PyPI, aislada de la de apt
-	pipx list                # programas instalados con pipx
+sudo apt install pipx
+pipx ensurepath  # añade ~/.local/bin al PATH (abra una terminal nueva después)
+pipx install ocrmypdf    # ejemplo: versión de PyPI, aislada de la de apt
+pipx list                # programas instalados con pipx
 \end{lstlisting}
 	\vspace{-0.2cm}
 	
@@ -828,10 +828,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Marker se ejecuta dentro de su entorno virtual. Cada vez que abra una terminal nueva, actívelo antes de usarlo:
 	
 	\begin{lstlisting}
-	source ~/marker-env/bin/activate  # el indicador pasa a empezar por (marker-env)
-	python --version                     # debe mostrar Python 3.12.x
-	pip show marker-pdf                  # versión de Marker instalada
-	deactivate                           # salir del entorno cuando termine
+source ~/marker-env/bin/activate  # el indicador pasa a empezar por (marker-env)
+python --version                     # debe mostrar Python 3.12.x
+pip show marker-pdf                  # versión de Marker instalada
+deactivate                           # salir del entorno cuando termine
 \end{lstlisting}
 	
 	Si creó el entorno en otra ruta, sustituya \arch{\tl/marker-env} por la suya. El Python del sistema (3.14) y el del entorno (3.12) son independientes: no instale Marker en el primero.
@@ -839,20 +839,20 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\paragraph{Actualizar Marker} Con el entorno activo:
 	
 	\begin{lstlisting}
-	pip install --upgrade marker-pdf          # actualiza Marker y sus dependencias
-	pip install --upgrade "marker-pdf[full]"  # además: DOCX, PPTX, XLSX, HTML y EPUB
+pip install --upgrade marker-pdf          # actualiza Marker y sus dependencias
+pip install --upgrade "marker-pdf[full]"  # además: DOCX, PPTX, XLSX, HTML y EPUB
 \end{lstlisting}
 	
 	\paragraph{El servidor \texttt{llama-server}} En equipos sin GPU NVIDIA, Marker~2 necesita el programa \cmd{llama-server} (del proyecto llama.cpp) para ejecutar su modelo de visión. Marker lo busca en este orden: primero la ruta indicada en la variable \texttt{LLAMA\_CPP\_BINARY} y, si no existe, un \cmd{llama-server} en el \texttt{PATH}. Hay dos formas de tenerlo:
 	
 	\begin{lstlisting}
-	# Opción 1: binario compilado por usted (por ejemplo en ~/llama.cpp)
-	echo "$LLAMA_CPP_BINARY"                 # ¿está definida la variable?
-	"$LLAMA_CPP_BINARY" --version            # ¿responde el programa?
-	
-	# Opción 2: paquete de Ubuntu 26.04 (instala /usr/bin/llama-server)
-	sudo apt install llama.cpp-tools
-	llama-server --version
+# Opción 1: binario compilado por usted (por ejemplo en ~/llama.cpp)
+echo "$LLAMA_CPP_BINARY"                 # ¿está definida la variable?
+"$LLAMA_CPP_BINARY" --version            # ¿responde el programa?
+
+# Opción 2: paquete de Ubuntu 26.04 (instala /usr/bin/llama-server)
+sudo apt install llama.cpp-tools
+llama-server --version
 \end{lstlisting}
 	
 	\begin{nota}
@@ -866,15 +866,15 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsubsection{Ver la versión de cada herramienta}
 	
 	\begin{lstlisting}
-  pdftoppm -v            # Poppler (todas sus utilidades aceptan -v)
-  img2pdf --version
-  magick -version        # ImageMagick usa un solo guion: -version
-  potrace --version
-  pandoc --version
-  qpdf --version
-  ocrmypdf --version
-  tesseract --version
-  gs --version  # Ghostscript: solo el número; gs -h muestra además los dispositivos
+pdftoppm -v            # Poppler (todas sus utilidades aceptan -v)
+img2pdf --version
+magick -version        # ImageMagick usa un solo guion: -version
+potrace --version
+pandoc --version
+qpdf --version
+ocrmypdf --version
+tesseract --version
+gs --version  # Ghostscript: solo el número; gs -h muestra además los dispositivos
 \end{lstlisting}
 	
 	\necesitaespacio{26\baselineskip}
@@ -893,28 +893,28 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsubsection{Script de comprobación general}
 	
 	\begin{lstlisting}
-	for c in pdfinfo pdftoppm pdftotext img2pdf magick potrace mkbitmap pandoc \
-	qpdf ocrmypdf tesseract gs; do
-	if command -v "$c" >/dev/null; then
-	printf '%-10s OK  -> %s\n' "$c" "$(command -v "$c")"
-	else
-	printf '%-10s FALTA\n' "$c"
-	fi
-	done
-	tesseract --list-langs        # idiomas de OCR disponibles (debe aparecer spa)
+for c in pdfinfo pdftoppm pdftotext img2pdf magick potrace mkbitmap pandoc \
+    qpdf ocrmypdf tesseract gs; do
+    if command -v "$c" >/dev/null; then
+        printf '%-10s OK  -> %s\n' "$c" "$(command -v "$c")"
+    else
+        printf '%-10s FALTA\n' "$c"
+    fi
+done
+tesseract --list-langs        # idiomas de OCR disponibles (debe aparecer spa)
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Cómo pedir ayuda a cada herramienta}
 	
 	\begin{lstlisting}
-	pdftoppm -h            # Poppler: -h o -help
-	qpdf --help            # QPDF: ayuda general; qpdf --help=all muestra todo
-	man ocrmypdf           # manual completo (salir con la tecla q)
-	magick -help           # ImageMagick: lista de opciones
-	# resumen; el manual completo está en https://pandoc.org/MANUAL.html
-	pandoc --help
-	marker_single --help   # con el entorno marker-env activo
+pdftoppm -h            # Poppler: -h o -help
+qpdf --help            # QPDF: ayuda general; qpdf --help=all muestra todo
+man ocrmypdf           # manual completo (salir con la tecla q)
+magick -help           # ImageMagick: lista de opciones
+# resumen; el manual completo está en https://pandoc.org/MANUAL.html
+pandoc --help
+marker_single --help   # con el entorno marker-env activo
 \end{lstlisting}
 	
 	% =====================================================================
@@ -940,7 +940,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Ejemplo de sintaxis general y su lectura:
 	
 	\begin{lstlisting}[style=sintaxis]
-  pdftoppm [opciones] <archivo.pdf> <prefijo_de_salida>
+pdftoppm [opciones] <archivo.pdf> <prefijo_de_salida>
 \end{lstlisting}
 	
 	Se lee así: el programa \cmd{pdftoppm}, cero o más opciones, un PDF obligatorio y un prefijo obligatorio para los nombres de las imágenes resultantes.
@@ -1021,9 +1021,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-	ls *.png                  # ver qué archivos coinciden ANTES de usar el patrón
-	echo archivo_*.pdf        # echo muestra la expansión sin ejecutar nada
-	ls -1 *.{jpg,png}         # varias extensiones
+ls *.png                  # ver qué archivos coinciden ANTES de usar el patrón
+echo archivo_*.pdf        # echo muestra la expansión sin ejecutar nada
+ls -1 *.{jpg,png}         # varias extensiones
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
@@ -1037,10 +1037,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{enumerate}
 	
 	\begin{lstlisting}
-	ls -v *.png                                  # ver el orden natural
-	mapfile -t imgs < <(printf '%s\n' *.png | sort -V)   # guardar la lista ordenada
-	printf '%s\n' "${imgs[@]}"                   # revisar
-	img2pdf "${imgs[@]}" -o documento.pdf        # usar la lista
+ls -v *.png                                  # ver el orden natural
+mapfile -t imgs < <(printf '%s\n' *.png | sort -V)   # guardar la lista ordenada
+printf '%s\n' "${imgs[@]}"                   # revisar
+img2pdf "${imgs[@]}" -o documento.pdf        # usar la lista
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
@@ -1061,16 +1061,16 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Bucles \texttt{for}}
 	
 	\begin{lstlisting}[style=sintaxis]
-	for VARIABLE in LISTA; do
-	ORDEN "$VARIABLE"
-	done
+for VARIABLE in LISTA; do
+    ORDEN "$VARIABLE"
+done
 \end{lstlisting}
 	
 	\begin{lstlisting}
-	# Extraer el texto de cada PDF de la carpeta actual
-	for f in *.pdf; do
-	pdftotext -layout "$f" "${f%.pdf}.txt"
-	done
+# Extraer el texto de cada PDF de la carpeta actual
+for f in *.pdf; do
+    pdftotext -layout "$f" "${f%.pdf}.txt"
+done
 \end{lstlisting}
 	
 	Las comillas en \texttt{"\$f"} son imprescindibles: sin ellas, un nombre con espacios se partiría en varios argumentos.
@@ -1091,29 +1091,29 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsubsection{Plantilla robusta para procesos por lotes}\label{sec:plantilla-lote}
 	
 	\begin{lstlisting}
-	#!/usr/bin/env bash
-	# lote.sh - procesa todos los PDF de ENTRADA y deja los resultados en SALIDA
-	set -u                           # error si se usa una variable no definida
-	shopt -s nullglob                # si no hay PDF, el bucle no se ejecuta
-	ENTRADA="$HOME/trabajo/entrada"
-	SALIDA="$HOME/trabajo/salida"
-	mkdir -p "$SALIDA"
-	for f in "$ENTRADA"/*.pdf; do
-	nombre="${f##*/}"                      # doc.pdf
-	base="${nombre%.pdf}"                  # doc
-	destino="$SALIDA/$base.txt"
-	[ -e "$destino" ] && { echo "Ya existe, se omite: $destino"; continue; }
-	echo "Procesando: $nombre"
-	if ! pdftotext -layout "$f" "$destino"; then
-	echo "ERROR: $nombre" >> "$SALIDA/errores.log"
-	fi
-	done
+#!/usr/bin/env bash
+# lote.sh - procesa todos los PDF de ENTRADA y deja los resultados en SALIDA
+set -u                           # error si se usa una variable no definida
+shopt -s nullglob                # si no hay PDF, el bucle no se ejecuta
+ENTRADA="$HOME/trabajo/entrada"
+SALIDA="$HOME/trabajo/salida"
+mkdir -p "$SALIDA"
+for f in "$ENTRADA"/*.pdf; do
+    nombre="${f##*/}"                      # doc.pdf
+    base="${nombre%.pdf}"                  # doc
+    destino="$SALIDA/$base.txt"
+    [ -e "$destino" ] && { echo "Ya existe, se omite: $destino"; continue; }
+    echo "Procesando: $nombre"
+    if ! pdftotext -layout "$f" "$destino"; then
+        echo "ERROR: $nombre" >> "$SALIDA/errores.log"
+    fi
+done
 \end{lstlisting}
 	
 	\begin{lstlisting}
-	nano ~/trabajo/lote.sh        # crear el archivo y pegar el contenido
-	chmod +x ~/trabajo/lote.sh    # darle permiso de ejecución
-	~/trabajo/lote.sh             # ejecutarlo
+nano ~/trabajo/lote.sh        # crear el archivo y pegar el contenido
+chmod +x ~/trabajo/lote.sh    # darle permiso de ejecución
+~/trabajo/lote.sh             # ejecutarlo
 \end{lstlisting}
 	
 	\begin{consejo}[Ensayo en seco]
@@ -1124,14 +1124,14 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Archivos en subcarpetas: \texttt{find}}
 	
 	\begin{lstlisting}
-	# Listar todos los PDF bajo ~/trabajo, en cualquier subcarpeta
-	find ~/trabajo -type f -name '*.pdf'
-	
-	# Procesarlos uno a uno, con nombres que contengan espacios o saltos de línea
-	find ~/trabajo -type f -name '*.pdf' -print0 |
-	while IFS= read -r -d '' f; do
-	pdfinfo "$f" | grep -E '^Pages:'
-	done
+# Listar todos los PDF bajo ~/trabajo, en cualquier subcarpeta
+find ~/trabajo -type f -name '*.pdf'
+
+# Procesarlos uno a uno, con nombres que contengan espacios o saltos de línea
+find ~/trabajo -type f -name '*.pdf' -print0 |
+while IFS= read -r -d '' f; do
+    pdfinfo "$f" | grep -E '^Pages:'
+done
 \end{lstlisting}
 	
 	Las comillas simples en \texttt{'*.pdf'} impiden que Bash expanda el patrón: así es \cmd{find} quien lo interpreta en cada subcarpeta. \opt{-print0} separa los nombres con un carácter nulo, el único que no puede aparecer en un nombre de archivo.
@@ -1140,8 +1140,8 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Procesamiento en paralelo con \texttt{xargs}}
 	
 	\begin{lstlisting}
-	# Hasta 4 procesos simultáneos; pdftotext crea doc.txt junto a cada doc.pdf
-	find ~/trabajo -name '*.pdf' -print0 | xargs -0 -n 1 -P 4 pdftotext -layout
+# Hasta 4 procesos simultáneos; pdftotext crea doc.txt junto a cada doc.pdf
+find ~/trabajo -name '*.pdf' -print0 | xargs -0 -n 1 -P 4 pdftotext -layout
 \end{lstlisting}
 	
 	\begin{advertencia}
@@ -1152,25 +1152,25 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Ejemplos de lotes habituales}
 	
 	\begin{lstlisting}
-	# Varias imágenes: reducir todas las JPG a 50 % en otra carpeta (originales
-	# intactos)
-	mkdir -p reducidas && magick mogrify -path reducidas -resize 50% *.jpg
-	
-	# Varios PDF: rasterizar cada uno en su propia carpeta
-	for f in *.pdf; do
-	d="${f%.pdf}_png"; mkdir -p "$d"
-	pdftoppm -png -r 150 "$f" "$d/pag"
-	done
-	
-	# Varios Markdown: convertir todos a DOCX
-	for f in *.md; do pandoc "$f" -o "${f%.md}.docx"; done
-	
-	# Varias conversiones encadenadas: OCR y después texto plano
-	mkdir -p ocr texto
-	for f in escaneados/*.pdf; do
-	b="${f##*/}"; b="${b%.pdf}"
-	ocrmypdf -l spa "$f" "ocr/$b.pdf" && pdftotext "ocr/$b.pdf" "texto/$b.txt"
-	done
+# Varias imágenes: reducir todas las JPG a 50 % en otra carpeta (originales
+# intactos)
+mkdir -p reducidas && magick mogrify -path reducidas -resize 50% *.jpg
+
+# Varios PDF: rasterizar cada uno en su propia carpeta
+for f in *.pdf; do
+    d="${f%.pdf}_png"; mkdir -p "$d"
+    pdftoppm -png -r 150 "$f" "$d/pag"
+done
+
+# Varios Markdown: convertir todos a DOCX
+for f in *.md; do pandoc "$f" -o "${f%.md}.docx"; done
+
+# Varias conversiones encadenadas: OCR y después texto plano
+mkdir -p ocr texto
+for f in escaneados/*.pdf; do
+    b="${f##*/}"; b="${b%.pdf}"
+    ocrmypdf -l spa "$f" "ocr/$b.pdf" && pdftotext "ocr/$b.pdf" "texto/$b.txt"
+done
 \end{lstlisting}
 	
 	El operador \texttt{\&\&} ejecuta la segunda orden solo si la primera terminó bien (código de salida 0). Para encadenar sin importar el resultado se usaría \texttt{;}.
@@ -1286,7 +1286,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	La primera conversión tarda más porque descarga los modelos. Para ver cuánto ocupan en su equipo:
 	
 	\begin{lstlisting}
-			   du -sh ~/.cache/datalab ~/.cache/huggingface 2>/dev/null
+du -sh ~/.cache/datalab ~/.cache/huggingface 2>/dev/null
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
@@ -1304,10 +1304,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	La instalación en \arch{\tl/marker-env} y la configuración de \cmd{llama-server} se describen en la sección~\ref{sec:marker-instalacion}. Comprobación rápida:
 	
 	\begin{lstlisting}
-  source ~/marker-env/bin/activate
-  pip show marker-pdf | head -2      # nombre y versión
-  marker_single --help               # opciones comunes
-  marker_single config --help  # TODAS las opciones de configuración (lista larga)
+source ~/marker-env/bin/activate
+pip show marker-pdf | head -2      # nombre y versión
+marker_single --help               # opciones comunes
+marker_single config --help  # TODAS las opciones de configuración (lista larga)
 \end{lstlisting}
 	
 	\begin{nota}[Ejecutables de Marker 2]
@@ -1318,7 +1318,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{\texttt{marker\_single}: convertir un archivo}\label{sec:marker-single}
 	
 	\begin{lstlisting}[style=sintaxis]
-  marker_single [opciones] <archivo>
+marker_single [opciones] <archivo>
 \end{lstlisting}
 	
 	Convierte un PDF o una imagen (y, con \texttt{marker-\allowbreak{}pdf[full]}, DOCX, PPTX, XLSX, HTML o EPUB). El resultado se guarda en una carpeta con el nombre del archivo dentro de \opt{-{}-output\_dir}.
@@ -1353,58 +1353,58 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsubsection{Ejemplos}
 	
 	\begin{lstlisting}
-	source ~/marker-env/bin/activate
-	cd /mnt/c/Users/NOMBRE/Downloads
-	
-	# 1) Prueba inicial con las dos primeras páginas (descarga modelos la primera vez)
-	marker_single "informe.pdf" --output_dir ./md_salida --page_range "0-1"
-	
-	# 2) Documento completo, modo rápido con fórmulas en línea
-	marker_single "informe.pdf" --output_dir ./md_salida --mode fast \
-	--ocr_inline_math true
-	
-	# 3) PDF digital de texto corrido: sin VLM, muy rápido
-	marker_single "manual.pdf" --output_dir ./md_salida --disable_ocr
-	
-	# 4) PDF con texto incrustado corrupto o escaneado: reconocimiento completo
-	marker_single "escaneado.pdf" --output_dir ./md_salida --force_ocr
-	
-	# 5) Otros formatos de salida
-	marker_single "informe.pdf" --output_dir ./json --output_format json
-	marker_single "informe.pdf" --output_dir ./html --output_format html
-	
-	# 6) Solo texto, sin imágenes, con separadores de página
-	marker_single "informe.pdf" --output_dir ./md_salida --disable_image_extraction \
-	--paginate_output
-	
-	# 7) Extraer solo las tablas
-	marker_single "datos.pdf" --output_dir ./tablas --converter_cls \
-	marker.converters.table.TableConverter
+source ~/marker-env/bin/activate
+cd /mnt/c/Users/NOMBRE/Downloads
+
+# 1) Prueba inicial con las dos primeras páginas (descarga modelos la primera vez)
+marker_single "informe.pdf" --output_dir ./md_salida --page_range "0-1"
+
+# 2) Documento completo, modo rápido con fórmulas en línea
+marker_single "informe.pdf" --output_dir ./md_salida --mode fast \
+    --ocr_inline_math true
+
+# 3) PDF digital de texto corrido: sin VLM, muy rápido
+marker_single "manual.pdf" --output_dir ./md_salida --disable_ocr
+
+# 4) PDF con texto incrustado corrupto o escaneado: reconocimiento completo
+marker_single "escaneado.pdf" --output_dir ./md_salida --force_ocr
+
+# 5) Otros formatos de salida
+marker_single "informe.pdf" --output_dir ./json --output_format json
+marker_single "informe.pdf" --output_dir ./html --output_format html
+
+# 6) Solo texto, sin imágenes, con separadores de página
+marker_single "informe.pdf" --output_dir ./md_salida --disable_image_extraction \
+    --paginate_output
+
+# 7) Extraer solo las tablas
+marker_single "datos.pdf" --output_dir ./tablas --converter_cls \
+    marker.converters.table.TableConverter
 \end{lstlisting}
 	
 	\begin{lstlisting}
-	# 8) Opciones en un archivo JSON (útil para repetir siempre la misma
-	# configuración)
-	cat > ~/marker-config.json <<'EOF'
-	{
-		"paginate_output": true,
-		"disable_image_extraction": false,
-		"keep_pageheader_in_output": false
-	}
-	EOF
-	marker_single "informe.pdf" --output_dir ./md_salida --config_json \
-	~/marker-config.json
+# 8) Opciones en un archivo JSON (útil para repetir siempre la misma
+# configuración)
+cat > ~/marker-config.json <<'EOF'
+{
+    "paginate_output": true,
+    "disable_image_extraction": false,
+    "keep_pageheader_in_output": false
+}
+EOF
+marker_single "informe.pdf" --output_dir ./md_salida --config_json \
+    ~/marker-config.json
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Estructura de la salida}
 	
 	\begin{lstlisting}[style=salida]
-	md_salida/
-	informe/
-	informe.md            # documento convertido (o .json / .html)
-	informe_meta.json     # metadatos: índice detectado y estadísticas por página
-	*.jpeg                # imágenes extraídas, enlazadas desde el Markdown
+md_salida/
+informe/
+informe.md            # documento convertido (o .json / .html)
+informe_meta.json     # metadatos: índice detectado y estadísticas por página
+*.jpeg                # imágenes extraídas, enlazadas desde el Markdown
 \end{lstlisting}
 	
 	El archivo \arch{\_meta.json} incluye el índice de títulos detectado (con su nivel y página) y, por cada página, el método con el que se obtuvo el texto. Es útil para comprobar qué páginas necesitaron reconocimiento.
@@ -1413,7 +1413,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{\texttt{marker}: convertir una carpeta}\label{sec:marker-lotes}
 	
 	\begin{lstlisting}[style=sintaxis]
-	marker [opciones] <carpeta_de_entrada>
+marker [opciones] <carpeta_de_entrada>
 \end{lstlisting}
 	
 	Acepta las mismas opciones que \cmd{marker\_single} y, además, las de la tabla siguiente. Procesa \textbf{todos los archivos} situados directamente en la carpeta (no entra en subcarpetas), con varios procesos que comparten un único servidor de inferencia.
@@ -1429,16 +1429,16 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-	# Copiar los PDF al disco de Linux (más rápido) y convertir la carpeta
-	mkdir -p ~/trabajo/pdf ~/trabajo/md
-	cp /mnt/c/Users/NOMBRE/Downloads/*.pdf ~/trabajo/pdf/
-	marker ~/trabajo/pdf --output_dir ~/trabajo/md --mode fast
-	
-	# Reanudar el mismo lote tras una interrupción
-	marker ~/trabajo/pdf --output_dir ~/trabajo/md --mode fast --skip_existing
-	
-	# Lote de documentos digitales sin ecuaciones: sin servidor y en paralelo
-	marker ~/trabajo/pdf --output_dir ~/trabajo/md --disable_ocr --workers 4
+# Copiar los PDF al disco de Linux (más rápido) y convertir la carpeta
+mkdir -p ~/trabajo/pdf ~/trabajo/md
+cp /mnt/c/Users/NOMBRE/Downloads/*.pdf ~/trabajo/pdf/
+marker ~/trabajo/pdf --output_dir ~/trabajo/md --mode fast
+
+# Reanudar el mismo lote tras una interrupción
+marker ~/trabajo/pdf --output_dir ~/trabajo/md --mode fast --skip_existing
+
+# Lote de documentos digitales sin ecuaciones: sin servidor y en paralelo
+marker ~/trabajo/pdf --output_dir ~/trabajo/md --disable_ocr --workers 4
 \end{lstlisting}
 	
 	\begin{advertencia}[Carpeta de entrada limpia]
@@ -1461,11 +1461,11 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-		# Mantener el servidor arrancado durante una sesión de trabajo
-		export SURYA_INFERENCE_KEEP_ALIVE=true
-		marker_single a.pdf --output_dir md
-		marker_single b.pdf --output_dir md
-		pkill llama-server          # detenerlo al terminar
+# Mantener el servidor arrancado durante una sesión de trabajo
+export SURYA_INFERENCE_KEEP_ALIVE=true
+marker_single a.pdf --output_dir md
+marker_single b.pdf --output_dir md
+pkill llama-server          # detenerlo al terminar
 \end{lstlisting}
 	
 	\necesitaespacio{20\baselineskip}
@@ -1490,12 +1490,12 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Servidor web e interfaz gráfica}
 	
 	\begin{lstlisting}
-		pip install -U streamlit streamlit-ace    # dependencias de la interfaz
-		marker_gui                                # abre una interfaz web local
-		
-		pip install -U uvicorn fastapi python-multipart
-		# API local; documentación en http://localhost:8001/docs
-		marker_server --port 8001
+pip install -U streamlit streamlit-ace    # dependencias de la interfaz
+marker_gui                                # abre una interfaz web local
+
+pip install -U uvicorn fastapi python-multipart
+# API local; documentación en http://localhost:8001/docs
+marker_server --port 8001
 \end{lstlisting}
 	
 	La API local solo acepta los parámetros \texttt{page\_range}, \texttt{mode}, \texttt{force\_ocr}, \texttt{paginate\_\allowbreak{}output} y \texttt{output\_format}; el modo híbrido y \opt{-{}-disable\_ocr} solo están disponibles desde la línea de comandos.
@@ -1610,9 +1610,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Instalación y comprobación}
 	
 	\begin{lstlisting}
-	sudo apt install poppler-utils
-	pdftoppm -v                           # versión (todas las utilidades aceptan -v)
-	dpkg -L poppler-utils | grep /usr/bin/  # utilidades realmente instaladas
+sudo apt install poppler-utils
+pdftoppm -v                           # versión (todas las utilidades aceptan -v)
+dpkg -L poppler-utils | grep /usr/bin/  # utilidades realmente instaladas
 \end{lstlisting}
 	
 	\necesitaespacio{18\baselineskip}
@@ -1632,7 +1632,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{\texttt{pdfinfo}: información del documento}\label{sec:pdfinfo}
 	
 	\begin{lstlisting}[style=sintaxis]
-  pdfinfo [opciones] <archivo.pdf>
+pdfinfo [opciones] <archivo.pdf>
 \end{lstlisting}
 	
 	\necesitaespacio{21\baselineskip}
@@ -1650,9 +1650,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-		pdfinfo doc.pdf
-		pdfinfo -f 1 -l 3 -box doc.pdf      # cajas de las páginas 1 a 3
-		pdfinfo -meta doc.pdf | less        # metadatos XMP (salir con q)
+pdfinfo doc.pdf
+pdfinfo -f 1 -l 3 -box doc.pdf      # cajas de las páginas 1 a 3
+pdfinfo -meta doc.pdf | less        # metadatos XMP (salir con q)
 \end{lstlisting}
 	
 	Campos clave de la salida: \texttt{Pages} (número de páginas), \texttt{Page size} (en puntos: 1 pt = 1/72 de pulgada; A4 = 595 × 842 pt), \texttt{Encrypted}, \texttt{Optimized} (si está linealizado para la web), \texttt{PDF version}, \texttt{Producer} y \texttt{Creator} (programas que lo generaron) y \texttt{Tagged} (si tiene estructura lógica).
@@ -1661,12 +1661,12 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{\texttt{pdffonts}: fuentes del documento}\label{sec:pdffonts}
 	
 	\begin{lstlisting}[style=sintaxis]
-  pdffonts [opciones] <archivo.pdf>
+pdffonts [opciones] <archivo.pdf>
 \end{lstlisting}
 	
 	\begin{lstlisting}
-  pdffonts doc.pdf
-  pdffonts -subst doc.pdf        # fuentes no incrustadas y por cuál se sustituyen
+pdffonts doc.pdf
+pdffonts -subst doc.pdf        # fuentes no incrustadas y por cuál se sustituyen
 \end{lstlisting}
 	
 	Columnas: \texttt{name}, \texttt{type} (Type 1, TrueType, CID\ldots), \texttt{encoding}, \texttt{emb} (incrustada), \texttt{sub} (subconjunto), \texttt{uni} (tiene tabla de correspondencia con Unicode). Interpretación práctica:
@@ -1682,7 +1682,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{\texttt{pdftotext}: extraer texto}\label{sec:pdftotext}
 	
 	\begin{lstlisting}[style=sintaxis]
-  pdftotext [opciones] <archivo.pdf> [<salida.txt> | -]
+pdftotext [opciones] <archivo.pdf> [<salida.txt> | -]
 \end{lstlisting}
 	
 	Si se omite la salida, crea un \arch{.txt} con el mismo nombre; con \val{-} escribe en la pantalla (salida estándar), lo que permite encadenar con otras órdenes.
@@ -1704,11 +1704,11 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-  pdftotext doc.pdf                          # crea doc.txt
-  pdftotext -layout doc.pdf doc.txt          # conservando la disposición
-  pdftotext -f 2 -l 5 -layout doc.pdf - | less   # páginas 2-5 en pantalla
-  pdftotext -layout doc.pdf - | grep -i "presupuesto"   # buscar sin crear archivos
-  pdftotext -nopgbrk -eol dos doc.pdf doc_windows.txt
+pdftotext doc.pdf                          # crea doc.txt
+pdftotext -layout doc.pdf doc.txt          # conservando la disposición
+pdftotext -f 2 -l 5 -layout doc.pdf - | less   # páginas 2-5 en pantalla
+pdftotext -layout doc.pdf - | grep -i "presupuesto"   # buscar sin crear archivos
+pdftotext -nopgbrk -eol dos doc.pdf doc_windows.txt
 \end{lstlisting}
 	
 	\begin{nota}[Texto vacío]
@@ -1719,7 +1719,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{\texttt{pdftoppm}: páginas a imágenes}\label{sec:pdftoppm}
 	
 	\begin{lstlisting}[style=sintaxis]
-  pdftoppm [opciones] <archivo.pdf> <prefijo>
+pdftoppm [opciones] <archivo.pdf> <prefijo>
 \end{lstlisting}
 	
 	Rasteriza cada página (la convierte en una imagen de píxeles). Sin opciones de formato produce PPM; lo habitual es pedir PNG (sin pérdida) o JPEG (con pérdida, archivos menores).
@@ -1752,15 +1752,15 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\newpage
 	
 	\begin{lstlisting}
-	pdftoppm -png -r 150 doc.pdf pag                       # todas las páginas, PNG
-	pdftoppm -jpeg -jpegopt quality=85 -r 150 doc.pdf pag  # JPEG con calidad 85
-	pdftoppm -png -r 300 -f 3 -l 3 doc.pdf p3              # solo la página 3
-	pdftoppm -png -r 200 -f 1 -singlefile doc.pdf portada  # crea portada.png
-	pdftoppm -png -scale-to 1024 doc.pdf mini              # lado mayor = 1024 px
-	# para OCR externo
-	pdftoppm -gray -r 300 -tiff -tiffcompression lzw escaneado.pdf ocr
-	mkdir -p png && pdftoppm -png -r 150 "/mnt/c/Users/NOMBRE/Downloads/doc.pdf" \
-	png/pag
+pdftoppm -png -r 150 doc.pdf pag                       # todas las páginas, PNG
+pdftoppm -jpeg -jpegopt quality=85 -r 150 doc.pdf pag  # JPEG con calidad 85
+pdftoppm -png -r 300 -f 3 -l 3 doc.pdf p3              # solo la página 3
+pdftoppm -png -r 200 -f 1 -singlefile doc.pdf portada  # crea portada.png
+pdftoppm -png -scale-to 1024 doc.pdf mini              # lado mayor = 1024 px
+# para OCR externo
+pdftoppm -gray -r 300 -tiff -tiffcompression lzw escaneado.pdf ocr
+mkdir -p png && pdftoppm -png -r 150 "/mnt/c/Users/NOMBRE/Downloads/doc.pdf" \
+    png/pag
 \end{lstlisting}
 	
 	\begin{advertencia}[Prefijo frente a carpeta]
@@ -1771,7 +1771,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{\texttt{pdftocairo}: imágenes y formatos vectoriales}\label{sec:pdftocairo}
 	
 	\begin{lstlisting}[style=sintaxis]
- pdftocairo <-png|-jpeg|-tiff|-svg|-pdf|-ps|-eps> [opciones] <archivo.pdf> [<salida>]
+pdftocairo <-png|-jpeg|-tiff|-svg|-pdf|-ps|-eps> [opciones] <archivo.pdf> [<salida>]
 \end{lstlisting}
 	
 	Usa el motor gráfico Cairo. Para imágenes acepta casi las mismas opciones que \cmd{pdftoppm} (con un prefijo como salida); además produce formatos vectoriales, donde la salida es un nombre de archivo.
@@ -1789,13 +1789,13 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
- pdftocairo -svg -f 1 -l 1 doc.pdf pagina1.svg          # página 1 como SVG
- pdftocairo -png -transp -r 300 -f 2 -l 2 grafico.pdf g  # PNG con transparencia
- pdftocairo -eps -f 1 -l 1 figura.pdf figura.eps        # para LaTeX antiguo
- pdftocairo -pdf problematico.pdf normalizado.pdf
- for n in $(seq 1 "$(pdfinfo doc.pdf | awk '/^Pages:/{print $2}')"); do
- pdftocairo -svg -f "$n" -l "$n" doc.pdf "pag-$n.svg"   # todas las páginas a SVG
- done
+pdftocairo -svg -f 1 -l 1 doc.pdf pagina1.svg          # página 1 como SVG
+pdftocairo -png -transp -r 300 -f 2 -l 2 grafico.pdf g  # PNG con transparencia
+pdftocairo -eps -f 1 -l 1 figura.pdf figura.eps        # para LaTeX antiguo
+pdftocairo -pdf problematico.pdf normalizado.pdf
+for n in $(seq 1 "$(pdfinfo doc.pdf | awk '/^Pages:/{print $2}')"); do
+    pdftocairo -svg -f "$n" -l "$n" doc.pdf "pag-$n.svg"   # todas las páginas a SVG
+done
 \end{lstlisting}
 	
 	\begin{nota}[¿pdftoppm o pdftocairo?]
@@ -1806,7 +1806,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{\texttt{pdfimages}: extraer imágenes incrustadas}\label{sec:pdfimages}
 	
 	\begin{lstlisting}[style=sintaxis]
-  pdfimages [opciones] <archivo.pdf> <prefijo>
+pdfimages [opciones] <archivo.pdf> <prefijo>
 \end{lstlisting}
 	
 	Extrae las imágenes tal como están guardadas dentro del PDF, con su resolución original (a diferencia de \cmd{pdftoppm}, que «fotografía» la página entera).
@@ -1823,9 +1823,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-		pdfimages -list doc.pdf               # inventario antes de extraer
-		mkdir -p imagenes && pdfimages -all -p doc.pdf imagenes/img
-		pdfimages -png -f 5 -l 5 doc.pdf p5   # solo las de la página 5
+pdfimages -list doc.pdf               # inventario antes de extraer
+mkdir -p imagenes && pdfimages -all -p doc.pdf imagenes/img
+pdfimages -png -f 5 -l 5 doc.pdf p5   # solo las de la página 5
 \end{lstlisting}
 	
 	\begin{limitacion}
@@ -1836,7 +1836,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{\texttt{pdftohtml}: PDF a HTML o XML}\label{sec:pdftohtml}
 	
 	\begin{lstlisting}[style=sintaxis]
-  pdftohtml [opciones] <archivo.pdf> [<salida>]
+pdftohtml [opciones] <archivo.pdf> [<salida>]
 \end{lstlisting}
 	
 	\necesitaespacio{24\baselineskip}
@@ -1855,16 +1855,16 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-	pdftohtml -s -noframes -i doc.pdf doc.html     # un único HTML, sin imágenes
-	pdftohtml -c -s doc.pdf doc_fiel.html          # aspecto similar al PDF
-	pdftohtml -xml -i doc.pdf doc                  # crea doc.xml
+pdftohtml -s -noframes -i doc.pdf doc.html     # un único HTML, sin imágenes
+pdftohtml -c -s doc.pdf doc_fiel.html          # aspecto similar al PDF
+pdftohtml -xml -i doc.pdf doc                  # crea doc.xml
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection{\texttt{pdftops}: PDF a PostScript o EPS}\label{sec:pdftops}
 	
 	\begin{lstlisting}[style=sintaxis]
-  pdftops [opciones] <archivo.pdf> [<salida.ps>]
+pdftops [opciones] <archivo.pdf> [<salida.ps>]
 \end{lstlisting}
 	
 	\necesitaespacio{18\baselineskip}
@@ -1879,21 +1879,21 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-				pdftops doc.pdf doc.ps
-				pdftops -level3 -paper A4 doc.pdf doc_a4.ps
-				pdftops -eps -f 2 -l 2 doc.pdf figura.eps
+pdftops doc.pdf doc.ps
+pdftops -level3 -paper A4 doc.pdf doc_a4.ps
+pdftops -eps -f 2 -l 2 doc.pdf figura.eps
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection{\texttt{pdfseparate}: una página por archivo}\label{sec:pdfseparate}
 	
 	\begin{lstlisting}[style=sintaxis]
-  pdfseparate [-f N] [-l N] <archivo.pdf> <patrón_con_%d.pdf>
+pdfseparate [-f N] [-l N] <archivo.pdf> <patrón_con_%d.pdf>
 \end{lstlisting}
 	
 	\begin{lstlisting}
-  pdfseparate doc.pdf pagina-%d.pdf           # pagina-1.pdf, pagina-2.pdf, ...
-  pdfseparate -f 3 -l 5 doc.pdf p-%03d.pdf    # p-003.pdf ... p-005.pdf (3 cifras)
+pdfseparate doc.pdf pagina-%d.pdf           # pagina-1.pdf, pagina-2.pdf, ...
+pdfseparate -f 3 -l 5 doc.pdf p-%03d.pdf    # p-003.pdf ... p-005.pdf (3 cifras)
 \end{lstlisting}
 	
 	\verb|%d| se sustituye por el número de página; \verb|%03d| lo rellena con ceros hasta tres cifras.
@@ -1902,12 +1902,12 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{\texttt{pdfunite}: unir PDF}\label{sec:pdfunite}
 	
 	\begin{lstlisting}[style=sintaxis]
-  pdfunite <entrada1.pdf> <entrada2.pdf> [...] <salida.pdf>
+pdfunite <entrada1.pdf> <entrada2.pdf> [...] <salida.pdf>
 \end{lstlisting}
 	
 	\begin{lstlisting}
-	pdfunite portada.pdf capitulo1.pdf capitulo2.pdf libro.pdf
-	pdfunite pagina-*.pdf unido.pdf      # ojo al orden: ver sección de comodines
+pdfunite portada.pdf capitulo1.pdf capitulo2.pdf libro.pdf
+pdfunite pagina-*.pdf unido.pdf      # ojo al orden: ver sección de comodines
 \end{lstlisting}
 	
 	\begin{importante}[El último nombre es la salida]
@@ -1918,11 +1918,11 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Otras utilidades: adjuntos y firmas}\label{sec:pdf-otras}
 	
 	\begin{lstlisting}
-	pdfdetach -list doc.pdf                         # listar archivos adjuntos
-	pdfdetach -saveall -o adjuntos/ doc.pdf          # extraerlos todos
-	pdfdetach -save 1 -o datos.xlsx doc.pdf          # extraer el adjunto número 1
-	pdfattach doc.pdf datos.csv doc_con_adjunto.pdf  # añadir un adjunto
-	pdfsig doc.pdf                                   # verificar firmas digitales
+pdfdetach -list doc.pdf                         # listar archivos adjuntos
+pdfdetach -saveall -o adjuntos/ doc.pdf          # extraerlos todos
+pdfdetach -save 1 -o datos.xlsx doc.pdf          # extraer el adjunto número 1
+pdfattach doc.pdf datos.csv doc_con_adjunto.pdf  # añadir un adjunto
+pdfsig doc.pdf                                   # verificar firmas digitales
 \end{lstlisting}
 	
 	\necesitaespacio{29\baselineskip}
@@ -1993,16 +1993,16 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Instalación y comprobación}
 	
 	\begin{lstlisting}
-	sudo apt install img2pdf
-	img2pdf --version
-	img2pdf --help | less
+sudo apt install img2pdf
+img2pdf --version
+img2pdf --help | less
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection{Sintaxis}
 	
 	\begin{lstlisting}[style=sintaxis]
-  img2pdf [opciones] <imagen1> [<imagen2> ...] -o <salida.pdf>
+img2pdf [opciones] <imagen1> [<imagen2> ...] -o <salida.pdf>
 \end{lstlisting}
 	
 	Cada imagen se convierte en una página, en el orden en que aparecen en la orden. Sin opciones de página, cada página mide lo mismo que su imagen según su resolución (si la imagen no indica resolución, se asumen 96 ppp).
@@ -2038,27 +2038,27 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Ejemplos}
 	
 	\begin{lstlisting}
-  img2pdf imagen1.png imagen2.png -o documento.pdf
-  img2pdf *.jpg -o album.pdf  # todas las JPG (orden alfabético)
-  # páginas A4, imagen encajada
-  img2pdf --pagesize A4 escaneo_*.jpg -o escaneos_a4.pdf
-  img2pdf --pagesize A4 --border 1.5cm *.jpg -o con_margen.pdf
-  # A4 vertical u horizontal
-  img2pdf --pagesize A4 --auto-orient fotos/*.jpg -o fotos.pdf
-  img2pdf --pagesize A4^T panoramica.jpg -o horizontal.pdf
-  img2pdf --imgsize 300dpi escaneo.png -o tamano_real.pdf  # tamaño físico a 300 ppp
-  img2pdf --rotation=ifvalid IMG_*.jpg -o movil.pdf  # EXIF defectuoso del móvil
-  img2pdf --title "Actas 2026" --author "Secretaría" --nodate actas/*.png -o \
-  actas.pdf
+img2pdf imagen1.png imagen2.png -o documento.pdf
+img2pdf *.jpg -o album.pdf  # todas las JPG (orden alfabético)
+# páginas A4, imagen encajada
+img2pdf --pagesize A4 escaneo_*.jpg -o escaneos_a4.pdf
+img2pdf --pagesize A4 --border 1.5cm *.jpg -o con_margen.pdf
+# A4 vertical u horizontal
+img2pdf --pagesize A4 --auto-orient fotos/*.jpg -o fotos.pdf
+img2pdf --pagesize A4^T panoramica.jpg -o horizontal.pdf
+img2pdf --imgsize 300dpi escaneo.png -o tamano_real.pdf  # tamaño físico a 300 ppp
+img2pdf --rotation=ifvalid IMG_*.jpg -o movil.pdf  # EXIF defectuoso del móvil
+img2pdf --title "Actas 2026" --author "Secretaría" --nodate actas/*.png -o \
+    actas.pdf
 \end{lstlisting}
 	
 	\begin{lstlisting}
-  # Orden natural (pag2 antes que pag10) y nombres con cualquier carácter
-  find . -maxdepth 1 -name '*.png' -print0 | sort -zV | img2pdf --from-file - -o \
-  natural.pdf
-  
-  # Tubería directa hacia OCRmyPDF (sin archivo intermedio)
-  img2pdf --pagesize A4 escaneo_*.png | ocrmypdf -l spa - escaneo_ocr.pdf
+# Orden natural (pag2 antes que pag10) y nombres con cualquier carácter
+find . -maxdepth 1 -name '*.png' -print0 | sort -zV | img2pdf --from-file - -o \
+    natural.pdf
+
+# Tubería directa hacia OCRmyPDF (sin archivo intermedio)
+img2pdf --pagesize A4 escaneo_*.png | ocrmypdf -l spa - escaneo_ocr.pdf
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
@@ -2184,20 +2184,20 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Instalación y comprobación}
 	
 	\begin{lstlisting}
-	# Ghostscript es necesario para leer PDF/PS/EPS
-	sudo apt install imagemagick ghostscript
-	magick -version                            # versión, delegados y características
-	magick -list format | less  # formatos admitidos (r = leer, w = escribir)
-	magick -list policy                        # política de seguridad en vigor
-	magick -list resource                      # límites de memoria, disco y tamaño
-	magick -list font | grep -i dejavu         # nombres de fuentes para -font
+# Ghostscript es necesario para leer PDF/PS/EPS
+sudo apt install imagemagick ghostscript
+magick -version                            # versión, delegados y características
+magick -list format | less  # formatos admitidos (r = leer, w = escribir)
+magick -list policy                        # política de seguridad en vigor
+magick -list resource                      # límites de memoria, disco y tamaño
+magick -list font | grep -i dejavu         # nombres de fuentes para -font
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection{Sintaxis y orden de las operaciones}
 	
 	\begin{lstlisting}[style=sintaxis]
-  magick [ajustes_de_lectura] <entrada...> [operaciones] <salida>
+magick [ajustes_de_lectura] <entrada...> [operaciones] <salida>
 \end{lstlisting}
 	
 	ImageMagick~7 procesa los argumentos de izquierda a derecha: lee las entradas, aplica cada operación a las imágenes ya leídas y escribe la salida (el formato lo determina la extensión). Hay dos tipos de opciones:
@@ -2246,10 +2246,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-  magick imagen.png imagen.jpg                         # PNG -> JPEG
-  magick foto.jpg -quality 82 -strip foto_web.jpg  # comprimir y quitar metadatos
-  magick foto.jpg -quality 80 foto.webp                # JPEG -> WebP
-  magick foto.jpg -strip -quality 82 -sampling-factor 4:2:0 -interlace Plane web.jpg
+magick imagen.png imagen.jpg                         # PNG -> JPEG
+magick foto.jpg -quality 82 -strip foto_web.jpg  # comprimir y quitar metadatos
+magick foto.jpg -quality 80 foto.webp                # JPEG -> WebP
+magick foto.jpg -strip -quality 82 -sampling-factor 4:2:0 -interlace Plane web.jpg
 \end{lstlisting}
 	
 	\necesitaespacio{18\baselineskip}
@@ -2264,11 +2264,11 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-  magick imagen.png -resize 50% salida.png
-  magick foto.jpg -resize 1920x1080 grande.jpg                  # cabe en 1920x1080
-  magick foto.jpg -resize "1920x1080>" sin_ampliar.jpg          # solo reduce
-  magick foto.jpg -resize "300x300^" -gravity center -extent 300x300 cuadrada.jpg
-  magick foto.jpg -thumbnail 200x200 miniatura.jpg
+magick imagen.png -resize 50% salida.png
+magick foto.jpg -resize 1920x1080 grande.jpg                  # cabe en 1920x1080
+magick foto.jpg -resize "1920x1080>" sin_ampliar.jpg          # solo reduce
+magick foto.jpg -resize "300x300^" -gravity center -extent 300x300 cuadrada.jpg
+magick foto.jpg -thumbnail 200x200 miniatura.jpg
 \end{lstlisting}
 	
 	\necesitaespacio{22\baselineskip}
@@ -2285,24 +2285,24 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-	magick foto.jpg -crop 800x600+100+50 +repage recorte.jpg
-	magick foto.jpg -gravity center -crop 1000x1000+0+0 +repage centro.jpg
-	magick escaneo.png -fuzz 5% -trim +repage sin_bordes.png
-	magick plano.png -crop 2x2@ +repage pieza_%02d.png      # pieza_00 ... pieza_03
+magick foto.jpg -crop 800x600+100+50 +repage recorte.jpg
+magick foto.jpg -gravity center -crop 1000x1000+0+0 +repage centro.jpg
+magick escaneo.png -fuzz 5% -trim +repage sin_bordes.png
+magick plano.png -crop 2x2@ +repage pieza_%02d.png      # pieza_00 ... pieza_03
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Rotar y voltear}
 	
 	\begin{lstlisting}
-	magick foto.jpg -rotate 90 girada.jpg
-	# rellena esquinas en blanco
-	magick escaneo.png -background white -rotate -2.5 enderezada.png
-	# aplica la etiqueta EXIF de orientación
-	magick foto.jpg -auto-orient orientada.jpg
-	magick foto.jpg -flip invertida_vertical.jpg     # -flop: espejo horizontal
-	# corrige inclinación pequeña automáticamente
-	magick escaneo.png -deskew 40% enderezado.png
+magick foto.jpg -rotate 90 girada.jpg
+# rellena esquinas en blanco
+magick escaneo.png -background white -rotate -2.5 enderezada.png
+# aplica la etiqueta EXIF de orientación
+magick foto.jpg -auto-orient orientada.jpg
+magick foto.jpg -flip invertida_vertical.jpg     # -flop: espejo horizontal
+# corrige inclinación pequeña automáticamente
+magick escaneo.png -deskew 40% enderezado.png
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
@@ -2314,9 +2314,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{itemize}
 	
 	\begin{lstlisting}
-	# solo metadato
-	magick escaneo.png -units PixelsPerInch -density 300 escaneo_300.png
-	magick escaneo_300.png -resample 150 escaneo_150.png  # mitad de píxeles
+# solo metadato
+magick escaneo.png -units PixelsPerInch -density 300 escaneo_300.png
+magick escaneo_300.png -resample 150 escaneo_150.png  # mitad de píxeles
 \end{lstlisting}
 	
 	\necesitaespacio{34\baselineskip}
@@ -2338,34 +2338,34 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-  magick foto.jpg -colorspace Gray gris.jpg
-  magick escaneo.jpg -colorspace Gray -level 15%,85% limpio.png   # fondo más blanco
-  magick foto.jpg -brightness-contrast 10x15 mejorada.jpg
-  magick firma.png -colorspace Gray -threshold 55% firma_bn.png
+magick foto.jpg -colorspace Gray gris.jpg
+magick escaneo.jpg -colorspace Gray -level 15%,85% limpio.png   # fondo más blanco
+magick foto.jpg -brightness-contrast 10x15 mejorada.jpg
+magick firma.png -colorspace Gray -threshold 55% firma_bn.png
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Combinar imágenes}
 	
 	\begin{lstlisting}
-  magick a.jpg b.jpg +append horizontal.jpg        # una al lado de otra
-  magick a.jpg b.jpg -append vertical.jpg          # una debajo de otra
-  magick montage *.jpg -tile 4x -geometry 300x300+6+6 hoja_contactos.jpg
-  magick foto.jpg logo.png -gravity southeast -geometry +20+20 -composite marca.jpg
+magick a.jpg b.jpg +append horizontal.jpg        # una al lado de otra
+magick a.jpg b.jpg -append vertical.jpg          # una debajo de otra
+magick montage *.jpg -tile 4x -geometry 300x300+6+6 hoja_contactos.jpg
+magick foto.jpg logo.png -gravity southeast -geometry +20+20 -composite marca.jpg
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Crear imágenes y añadir texto}
 	
 	\begin{lstlisting}
-  magick -size 1200x630 xc:white lienzo.png                       # lienzo blanco
-  magick -size 1200x300 gradient:white-"#1f4e79" degradado.png    # degradado
-  magick -background white -fill black -font DejaVu-Sans -pointsize 48 \
-  label:"Título del póster" rotulo.png  # rótulo ajustado al texto
-  magick -size 800x -background white -font DejaVu-Sans -pointsize 28 \
-  caption:"Un texto largo que se reparte en varias líneas" parrafo.png
-  magick foto.jpg -gravity south -fill white -font DejaVu-Sans -pointsize 36 \
-  -annotate +0+20 "Borrador" anotada.jpg  # texto sobre una imagen
+magick -size 1200x630 xc:white lienzo.png                       # lienzo blanco
+magick -size 1200x300 gradient:white-"#1f4e79" degradado.png    # degradado
+magick -background white -fill black -font DejaVu-Sans -pointsize 48 \
+    label:"Título del póster" rotulo.png  # rótulo ajustado al texto
+magick -size 800x -background white -font DejaVu-Sans -pointsize 28 \
+    caption:"Un texto largo que se reparte en varias líneas" parrafo.png
+magick foto.jpg -gravity south -fill white -font DejaVu-Sans -pointsize 36 \
+    -annotate +0+20 "Borrador" anotada.jpg  # texto sobre una imagen
 \end{lstlisting}
 	
 	\opt{-font} acepta los nombres de \cmd{magick -list font} o la ruta a un archivo \arch{.ttf}/\arch{.otf}. Si una fuente no existe, ImageMagick usa otra sin avisar claramente.
@@ -2383,28 +2383,28 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-  # PNG transparente -> JPG
-  magick logo.png -background white -alpha remove -alpha off logo.jpg
-  magick logo_fondo_blanco.png -fuzz 8% -transparent white logo_transparente.png
+# PNG transparente -> JPG
+magick logo.png -background white -alpha remove -alpha off logo.jpg
+magick logo_fondo_blanco.png -fuzz 8% -transparent white logo_transparente.png
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{GIF animados}
 	
 	\begin{lstlisting}
-  # 50 = 0,5 s por fotograma; 0 = bucle infinito
-  magick -delay 50 -loop 0 frame_*.png animacion.gif
-  magick animacion.gif -layers Optimize optimizada.gif # reduce tamaño
-  magick animacion.gif -coalesce fotograma_%03d.png  # separar fotogramas completos
+# 50 = 0,5 s por fotograma; 0 = bucle infinito
+magick -delay 50 -loop 0 frame_*.png animacion.gif
+magick animacion.gif -layers Optimize optimizada.gif # reduce tamaño
+magick animacion.gif -coalesce fotograma_%03d.png  # separar fotogramas completos
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Información de una imagen}
 	
 	\begin{lstlisting}
-  magick identify foto.jpg                         # formato, tamaño, profundidad
-  magick identify -verbose foto.jpg | less  # todo: EXIF, perfil, estadísticas
-  magick identify -format "%f %wx%h %x\n" *.jpg    # nombre, tamaño y resolución
+magick identify foto.jpg                         # formato, tamaño, profundidad
+magick identify -verbose foto.jpg | less  # todo: EXIF, perfil, estadísticas
+magick identify -format "%f %wx%h %x\n" *.jpg    # nombre, tamaño y resolución
 \end{lstlisting}
 	
 	\necesitaespacio{13\baselineskip}
@@ -2419,10 +2419,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-	mkdir -p web && magick mogrify -path web -resize "1600x1600>" -quality 82 \
-	-strip *.jpg
-	# TIFF -> PNG en otra carpeta
-	mkdir -p png && magick mogrify -path png -format png *.tif
+mkdir -p web && magick mogrify -path web -resize "1600x1600>" -quality 82 \
+    -strip *.jpg
+# TIFF -> PNG en otra carpeta
+mkdir -p png && magick mogrify -path png -format png *.tif
 \end{lstlisting}
 	
 	\begin{advertencia}[mogrify sobrescribe]
@@ -2432,8 +2432,8 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Para lotes con nombres de salida personalizados, use un bucle:
 	
 	\begin{lstlisting}
-  mkdir -p gris
-  for f in *.jpg; do magick "$f" -colorspace Gray "gris/${f%.jpg}_gris.jpg"; done
+mkdir -p gris
+for f in *.jpg; do magick "$f" -colorspace Gray "gris/${f%.jpg}_gris.jpg"; done
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
@@ -2442,16 +2442,16 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	ImageMagick no interpreta PDF por sí mismo: delega en Ghostscript para rasterizarlo y, al escribir un PDF, coloca las imágenes como mapas de bits. Rasterizar (convertir en píxeles) no es lo mismo que convertir: el resultado pierde texto seleccionable y vectores.
 	
 	\begin{lstlisting}
-	# Página 1 (índice 0) a PNG a 300 ppp con fondo blanco
-	magick -density 300 "doc.pdf[0]" -background white -alpha remove -alpha off \
-	pag1.png
-	
-	# Páginas 1 a 3 (índices 0-2) a JPEG
-	magick -density 150 "doc.pdf[0-2]" -background white -alpha remove -quality 85 \
-	pag-%02d.jpg
-	
-	# Imágenes a PDF (recomprime; para conservar calidad, mejor img2pdf)
-	magick a.png b.jpg resultado.pdf
+# Página 1 (índice 0) a PNG a 300 ppp con fondo blanco
+magick -density 300 "doc.pdf[0]" -background white -alpha remove -alpha off \
+    pag1.png
+
+# Páginas 1 a 3 (índices 0-2) a JPEG
+magick -density 150 "doc.pdf[0-2]" -background white -alpha remove -quality 85 \
+    pag-%02d.jpg
+
+# Imágenes a PDF (recomprime; para conservar calidad, mejor img2pdf)
+magick a.png b.jpg resultado.pdf
 \end{lstlisting}
 	
 	\begin{itemize}
@@ -2551,16 +2551,16 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Instalación y comprobación}
 	
 	\begin{lstlisting}
-	sudo apt install potrace    # incluye también mkbitmap
-	potrace --version
-	mkbitmap --version
+sudo apt install potrace    # incluye también mkbitmap
+potrace --version
+mkbitmap --version
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection{Sintaxis}
 	
 	\begin{lstlisting}[style=sintaxis]
-  potrace [opciones] [<archivo.pbm|pgm|ppm|bmp> ...]
+potrace [opciones] [<archivo.pbm|pgm|ppm|bmp> ...]
 \end{lstlisting}
 	
 	Sin \opt{-o}, cada salida toma el nombre de la entrada con la extensión del formato elegido. Sin archivo de entrada (o con \val{-}), lee de la entrada estándar.
@@ -2620,14 +2620,14 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\flujo{logo.png / foto.jpg,magick: gris + umbral,logo.pbm (blanco y negro puro),potrace,logo.svg}
 	
 	\begin{lstlisting}
-	# 1) Convertir a gris y aplicar un umbral -> PBM (1 bit)
-	magick logo.png -colorspace Gray -threshold 50% logo.pbm
-	
-	# 2) Vectorizar
-	potrace logo.pbm -s -o logo.svg
-	
-	# En una sola línea, sin archivo intermedio
-	magick logo.png -colorspace Gray -threshold 50% pbm:- | potrace -s -o logo.svg
+# 1) Convertir a gris y aplicar un umbral -> PBM (1 bit)
+magick logo.png -colorspace Gray -threshold 50% logo.pbm
+
+# 2) Vectorizar
+potrace logo.pbm -s -o logo.svg
+
+# En una sola línea, sin archivo intermedio
+magick logo.png -colorspace Gray -threshold 50% pbm:- | potrace -s -o logo.svg
 \end{lstlisting}
 	
 	Ajuste el umbral (40\,\%, 60\,\%\ldots) hasta que la vista previa en blanco y negro contenga todos los detalles sin manchas. Para dibujos escaneados con iluminación desigual, \cmd{mkbitmap} da mejores resultados que un umbral fijo.
@@ -2649,22 +2649,22 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-	magick dibujo_escaneado.jpg -colorspace Gray dibujo.pgm
-	mkbitmap -f 2 -s 2 -t 0.48 dibujo.pgm -o dibujo.pbm
-	potrace -s -t 5 dibujo.pbm -o dibujo.svg
+magick dibujo_escaneado.jpg -colorspace Gray dibujo.pgm
+mkbitmap -f 2 -s 2 -t 0.48 dibujo.pgm -o dibujo.pbm
+potrace -s -t 5 dibujo.pbm -o dibujo.svg
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection{Ejemplos}
 	
 	\begin{lstlisting}
-	potrace logo.pbm -s -o logo.svg                     # SVG
-	potrace -b pdf logo.pbm -o logo.pdf                 # PDF vectorial para LaTeX
-	potrace -b pdfpage -P a4 logo.pbm -o logo_a4.pdf    # en una página A4
-	potrace logo.pbm -s -t 5 -a 1.0 -O 0.2 -o limpio.svg   # menos manchas
-	potrace logo.pbm -s -C "#1f4e79" -o azul.svg        # color corporativo
-	potrace logo.pbm -s -W 5cm -o 5cm.svg               # ancho de 5 cm
-	potrace firma.bmp -s -o firma.svg                   # BMP también se admite
+potrace logo.pbm -s -o logo.svg                     # SVG
+potrace -b pdf logo.pbm -o logo.pdf                 # PDF vectorial para LaTeX
+potrace -b pdfpage -P a4 logo.pbm -o logo_a4.pdf    # en una página A4
+potrace logo.pbm -s -t 5 -a 1.0 -O 0.2 -o limpio.svg   # menos manchas
+potrace logo.pbm -s -C "#1f4e79" -o azul.svg        # color corporativo
+potrace logo.pbm -s -W 5cm -o 5cm.svg               # ancho de 5 cm
+potrace firma.bmp -s -o firma.svg                   # BMP también se admite
 \end{lstlisting}
 	
 	\paragraph{Imágenes de varios colores} Potrace no separa colores. La técnica consiste en crear una máscara en blanco y negro por cada color con ImageMagick (\opt{-fuzz} y \opt{-fill}/\opt{-opaque}, o umbrales por canal), vectorizar cada máscara con su \opt{-C} y combinar los SVG en un editor como Inkscape. Es un proceso manual: para logotipos de muchos colores, conviene un programa de diseño.
@@ -2729,12 +2729,12 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Instalación y comprobación}
 	
 	\begin{lstlisting}
-	sudo apt install pandoc
-	pandoc --version
-	pandoc --list-input-formats      # formatos que puede leer
-	pandoc --list-output-formats     # formatos que puede escribir
-	# variantes de Markdown (+ activada, - desactivada)
-	pandoc --list-extensions=markdown
+sudo apt install pandoc
+pandoc --version
+pandoc --list-input-formats      # formatos que puede leer
+pandoc --list-output-formats     # formatos que puede escribir
+# variantes de Markdown (+ activada, - desactivada)
+pandoc --list-extensions=markdown
 \end{lstlisting}
 	
 	Para generar PDF, Pandoc necesita un \textbf{motor} externo; el predeterminado es \cmd{pdflatex} (paquetes LaTeX de la sección~\ref{sec:instalacion}).
@@ -2743,8 +2743,8 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Sintaxis}
 	
 	\begin{lstlisting}[style=sintaxis]
-  pandoc [opciones] [<entrada> ...] -o <salida>
-  pandoc -f <formato_entrada> -t <formato_salida> [opciones] [<entrada> ...]
+pandoc [opciones] [<entrada> ...] -o <salida>
+pandoc -f <formato_entrada> -t <formato_salida> [opciones] [<entrada> ...]
 \end{lstlisting}
 	
 	Pandoc deduce los formatos por las extensiones (\arch{.md}, \arch{.docx}, \arch{.html}\ldots). \opt{-f} y \opt{-t} los fijan explícitamente (imprescindible al leer de la entrada estándar o con extensiones ambiguas). Si se dan varias entradas, se concatenan. Sin \opt{-o}, el resultado se escribe en pantalla.
@@ -2805,16 +2805,16 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\paragraph{Metadatos y variables} Los metadatos (\opt{-M} o el bloque YAML inicial) describen el documento: título, autor, fecha, idioma. Las variables (\opt{-V}) solo configuran la plantilla: márgenes, fuente, tamaño. Con \val{lang: es}, LaTeX usa la separación silábica y los rótulos en español («Tabla», «Figura»).
 	
 	\begin{lstlisting}[style=salida]
-	---
-	title: "Informe de laboratorio"
-	author: "Nombre Apellido"
-	date: "Octubre de 2026"
-	lang: es
-	geometry: margin=2.5cm
-	fontsize: 11pt
-	---
-	# Introducción
-	Texto del documento...
+---
+title: "Informe de laboratorio"
+author: "Nombre Apellido"
+date: "Octubre de 2026"
+lang: es
+geometry: margin=2.5cm
+fontsize: 11pt
+---
+# Introducción
+Texto del documento...
 \end{lstlisting}
 	
 	\paragraph{Plantillas y documentos de referencia} Para DOCX, el aspecto se controla con un documento de referencia: extraiga el predeterminado, modifique sus \emph{estilos} en Word (no el texto) y úselo con \opt{-{}-reference-doc}.
@@ -2823,55 +2823,55 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Ejemplos}
 	
 	\begin{lstlisting}
-	# Markdown -> DOCX, con estilos propios
-	pandoc informe.md -o informe.docx
-	# editar estilos en Word
-	pandoc -o plantilla.docx --print-default-data-file reference.docx
-	pandoc informe.md --reference-doc=plantilla.docx -o informe.docx
-	
-	# Markdown -> PDF (pdflatex) con índice, secciones numeradas y márgenes
-	pandoc informe.md -o informe.pdf --toc -N -M lang=es -V geometry:margin=2.5cm
-	
-	# Markdown -> PDF con Unicode completo y fuente del sistema
-	pandoc informe.md -o informe.pdf --pdf-engine=xelatex -M lang=es -V \
-	mainfont="DejaVu Serif"
-	
-	# Markdown -> LaTeX completo para revisar y compilar a mano
-	pandoc informe.md -s -o informe.tex
-	
-	# Markdown -> HTML autónomo (imágenes y estilos incrustados)
-	pandoc informe.md -s --embed-resources --toc -o informe.html
-	
-	# DOCX -> Markdown (GitHub), extrayendo las imágenes
-	pandoc documento.docx -t gfm --extract-media=imagenes --wrap=none -o documento.md
-	
-	# HTML -> Markdown
-	pandoc pagina.html -f html -t gfm -o pagina.md
-	
-	# Markdown -> EPUB y ODT
-	pandoc libro.md -o libro.epub -M title="Mi libro" -M author="Autor"
-	pandoc informe.md -o informe.odt
-	
-	# Markdown -> texto plano
-	pandoc informe.md -t plain -o informe.txt
+# Markdown -> DOCX, con estilos propios
+pandoc informe.md -o informe.docx
+# editar estilos en Word
+pandoc -o plantilla.docx --print-default-data-file reference.docx
+pandoc informe.md --reference-doc=plantilla.docx -o informe.docx
+
+# Markdown -> PDF (pdflatex) con índice, secciones numeradas y márgenes
+pandoc informe.md -o informe.pdf --toc -N -M lang=es -V geometry:margin=2.5cm
+
+# Markdown -> PDF con Unicode completo y fuente del sistema
+pandoc informe.md -o informe.pdf --pdf-engine=xelatex -M lang=es -V \
+    mainfont="DejaVu Serif"
+
+# Markdown -> LaTeX completo para revisar y compilar a mano
+pandoc informe.md -s -o informe.tex
+
+# Markdown -> HTML autónomo (imágenes y estilos incrustados)
+pandoc informe.md -s --embed-resources --toc -o informe.html
+
+# DOCX -> Markdown (GitHub), extrayendo las imágenes
+pandoc documento.docx -t gfm --extract-media=imagenes --wrap=none -o documento.md
+
+# HTML -> Markdown
+pandoc pagina.html -f html -t gfm -o pagina.md
+
+# Markdown -> EPUB y ODT
+pandoc libro.md -o libro.epub -M title="Mi libro" -M author="Autor"
+pandoc informe.md -o informe.odt
+
+# Markdown -> texto plano
+pandoc informe.md -t plain -o informe.txt
 \end{lstlisting}
 	
 	\begin{lstlisting}
-	# Configuración reutilizable con un archivo de valores por defecto
-	cat > pdf-es.yaml <<'EOF'
-	from: markdown
-	to: pdf
-	pdf-engine: xelatex
-	metadata:
-	lang: es
-	variables:
-	geometry: margin=2.5cm
-	mainfont: DejaVu Serif
-	EOF
-	pandoc -d pdf-es.yaml informe.md -o informe.pdf
-	
-	# Lote: todos los Markdown de la carpeta a DOCX
-	for f in *.md; do pandoc "$f" -o "${f%.md}.docx"; done
+# Configuración reutilizable con un archivo de valores por defecto
+cat > pdf-es.yaml <<'EOF'
+from: markdown
+to: pdf
+pdf-engine: xelatex
+metadata:
+lang: es
+variables:
+geometry: margin=2.5cm
+mainfont: DejaVu Serif
+EOF
+pandoc -d pdf-es.yaml informe.md -o informe.pdf
+
+# Lote: todos los Markdown de la carpeta a DOCX
+for f in *.md; do pandoc "$f" -o "${f%.md}.docx"; done
 \end{lstlisting}
 	
 	\necesitaespacio{32\baselineskip}
@@ -2945,20 +2945,20 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Instalación y comprobación}
 	
 	\begin{lstlisting}
-	sudo apt install qpdf
-	qpdf --version
-	qpdf --help            # temas de ayuda; qpdf --help=all muestra todo
-	qpdf --help=--pages    # ayuda de una opción concreta
+sudo apt install qpdf
+qpdf --version
+qpdf --help            # temas de ayuda; qpdf --help=all muestra todo
+qpdf --help=--pages    # ayuda de una opción concreta
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection{Sintaxis general y códigos de salida}
 	
 	\begin{lstlisting}[style=sintaxis]
-  qpdf [opciones] <entrada.pdf> [opciones] <salida.pdf>
-  qpdf [opciones] --empty --pages <archivo> [rango] [<archivo> [rango] ...] -- \
-  <salida.pdf>
-  qpdf [opciones] <entrada.pdf> --replace-input
+qpdf [opciones] <entrada.pdf> [opciones] <salida.pdf>
+qpdf [opciones] --empty --pages <archivo> [rango] [<archivo> [rango] ...] -- \
+    <salida.pdf>
+qpdf [opciones] <entrada.pdf> --replace-input
 \end{lstlisting}
 	
 	QPDF siempre escribe un archivo \emph{nuevo}; no acepta la misma ruta como entrada y salida. Para modificar el archivo en su sitio existe \opt{-{}-replace-\allowbreak{}input}.
@@ -3011,11 +3011,11 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-	qpdf --check doc.pdf; echo "codigo: $?"
-	qpdf --show-npages doc.pdf
-	qpdf --show-encryption doc.pdf
-	qpdf --requires-password doc.pdf; echo $?     # 0 = pide contraseña al abrir
-	qpdf --json --json-key=pages doc.pdf | less
+qpdf --check doc.pdf; echo "codigo: $?"
+qpdf --show-npages doc.pdf
+qpdf --show-encryption doc.pdf
+qpdf --requires-password doc.pdf; echo $?     # 0 = pide contraseña al abrir
+qpdf --json --json-key=pages doc.pdf | less
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
@@ -3024,14 +3024,14 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Muchos PDF dañados (descargas incompletas, tablas de referencias corruptas) se reparan simplemente reescribiéndolos: QPDF reconstruye la estructura al leer y escribe un archivo coherente.
 	
 	\begin{lstlisting}
-		qpdf danado.pdf reparado.pdf; echo $?      # 3 = reparado con avisos
-		qpdf --check reparado.pdf
+qpdf danado.pdf reparado.pdf; echo $?      # 3 = reparado con avisos
+qpdf --check reparado.pdf
 \end{lstlisting}
 	
 	Para estudiar la estructura con un editor de texto, el modo QDF escribe un PDF «legible»:
 	
 	\begin{lstlisting}
-		qpdf --qdf --object-streams=disable doc.pdf legible.pdf
+qpdf --qdf --object-streams=disable doc.pdf legible.pdf
 \end{lstlisting}
 	
 	\begin{limitacion}
@@ -3054,35 +3054,35 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-	# Unir varios PDF completos
-	qpdf --empty --pages portada.pdf cap1.pdf cap2.pdf -- libro.pdf
-	
-	# Unir con selección: páginas 1-3 de a.pdf y la última de b.pdf
-	qpdf --empty --pages a.pdf 1-3 b.pdf z -- seleccion.pdf
-	
-	# Extraer páginas del propio archivo (el punto es la entrada)
-	qpdf doc.pdf --pages . 1,3,5-7 -- extracto.pdf
-	
-	# Quitar la página 2
-	qpdf doc.pdf --pages . 1-z,x2 -- sin_pag2.pdf
-	
-	# Invertir el orden
-	qpdf doc.pdf --pages . z-1 -- invertido.pdf
-	
-	# Una página por archivo: pag-1.pdf, pag-2.pdf, ...
-	qpdf --split-pages doc.pdf pag-%d.pdf
-	
-	# Bloques de 10 páginas: bloque-01-10.pdf, bloque-11-20.pdf, ...
-	qpdf --split-pages=10 doc.pdf bloque.pdf
-	
-	# Girar 90 grados la página 1 y 180 todas las demás
-	qpdf doc.pdf girado.pdf --rotate=+90:1 --rotate=180:2-z
-	
-	# Escáner sin dúplex: intercalar caras anteriores y posteriores (invertidas)
-	qpdf --collate --empty --pages anversos.pdf reversos.pdf z-1 -- completo.pdf
-	
-	# Marca de agua: superponer la página 1 de sello.pdf en todas las páginas
-	qpdf doc.pdf --overlay sello.pdf --from=1 --repeat=1 -- doc_sellado.pdf
+# Unir varios PDF completos
+qpdf --empty --pages portada.pdf cap1.pdf cap2.pdf -- libro.pdf
+
+# Unir con selección: páginas 1-3 de a.pdf y la última de b.pdf
+qpdf --empty --pages a.pdf 1-3 b.pdf z -- seleccion.pdf
+
+# Extraer páginas del propio archivo (el punto es la entrada)
+qpdf doc.pdf --pages . 1,3,5-7 -- extracto.pdf
+
+# Quitar la página 2
+qpdf doc.pdf --pages . 1-z,x2 -- sin_pag2.pdf
+
+# Invertir el orden
+qpdf doc.pdf --pages . z-1 -- invertido.pdf
+
+# Una página por archivo: pag-1.pdf, pag-2.pdf, ...
+qpdf --split-pages doc.pdf pag-%d.pdf
+
+# Bloques de 10 páginas: bloque-01-10.pdf, bloque-11-20.pdf, ...
+qpdf --split-pages=10 doc.pdf bloque.pdf
+
+# Girar 90 grados la página 1 y 180 todas las demás
+qpdf doc.pdf girado.pdf --rotate=+90:1 --rotate=180:2-z
+
+# Escáner sin dúplex: intercalar caras anteriores y posteriores (invertidas)
+qpdf --collate --empty --pages anversos.pdf reversos.pdf z-1 -- completo.pdf
+
+# Marca de agua: superponer la página 1 de sello.pdf en todas las páginas
+qpdf doc.pdf --overlay sello.pdf --from=1 --repeat=1 -- doc_sellado.pdf
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
@@ -3091,8 +3091,8 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Un PDF puede tener dos contraseñas: la de \textbf{usuario} (necesaria para abrirlo) y la de \textbf{propietario} (permite cambiar los permisos: imprimir, copiar, modificar).
 	
 	\begin{lstlisting}[style=sintaxis]
-  qpdf --encrypt --user-password=U --owner-password=P --bits=256 [restricciones] \
-  -- <entrada> <salida>
+qpdf --encrypt --user-password=U --owner-password=P --bits=256 [restricciones] \
+    -- <entrada> <salida>
 \end{lstlisting}
 	
 	\necesitaespacio{20\baselineskip}
@@ -3108,17 +3108,17 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-	# Cifrar con contraseña de apertura
-	qpdf --encrypt --user-password='lectura' --owner-password='propietario' \
-	--bits=256 -- \
-	doc.pdf doc_cifrado.pdf
-	
-	# Sin contraseña de apertura, pero sin copiar ni modificar
-	qpdf --encrypt --user-password= --owner-password='propietario' --bits=256 \
-	--print=low --modify=none --extract=n -- doc.pdf doc_restringido.pdf
-	
-	# Descifrar un PDF del que conoce la contraseña
-	qpdf --password='propietario' --decrypt doc_cifrado.pdf doc_abierto.pdf
+# Cifrar con contraseña de apertura
+qpdf --encrypt --user-password='lectura' --owner-password='propietario' \
+    --bits=256 -- \
+    doc.pdf doc_cifrado.pdf
+
+# Sin contraseña de apertura, pero sin copiar ni modificar
+qpdf --encrypt --user-password= --owner-password='propietario' --bits=256 \
+    --print=low --modify=none --extract=n -- doc.pdf doc_restringido.pdf
+
+# Descifrar un PDF del que conoce la contraseña
+qpdf --password='propietario' --decrypt doc_cifrado.pdf doc_abierto.pdf
 \end{lstlisting}
 	
 	\begin{importante}[Uso legítimo]
@@ -3141,10 +3141,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-  qpdf --linearize doc.pdf doc_web.pdf
-  qpdf --object-streams=generate --compress-streams=y --recompress-flate \
-  --compression-level=9 doc.pdf doc_compacto.pdf      # sin pérdida
-  qpdf --optimize-images doc.pdf doc_jpeg.pdf              # con pérdida en imágenes
+qpdf --linearize doc.pdf doc_web.pdf
+qpdf --object-streams=generate --compress-streams=y --recompress-flate \
+    --compression-level=9 doc.pdf doc_compacto.pdf      # sin pérdida
+qpdf --optimize-images doc.pdf doc_jpeg.pdf              # con pérdida en imágenes
 \end{lstlisting}
 	
 	\begin{nota}
@@ -3168,11 +3168,11 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\end{opciones}
 	
 	\begin{lstlisting}
-	qpdf --remove-info --remove-metadata doc.pdf doc_anonimo.pdf
-	qpdf doc.pdf etiquetado.pdf --set-page-labels 1:r 3:D --     # i, ii, 1, 2, 3...
-	qpdf doc.pdf --add-attachment datos.csv -- doc_con_datos.pdf
-	qpdf --generate-appearances --flatten-annotations=all formulario.pdf \
-	formulario_plano.pdf
+qpdf --remove-info --remove-metadata doc.pdf doc_anonimo.pdf
+qpdf doc.pdf etiquetado.pdf --set-page-labels 1:r 3:D --     # i, ii, 1, 2, 3...
+qpdf doc.pdf --add-attachment datos.csv -- doc_con_datos.pdf
+qpdf --generate-appearances --flatten-annotations=all formulario.pdf \
+    formulario_plano.pdf
 \end{lstlisting}
 	
 	\begin{nota}[Escribir título o autor]
@@ -3273,13 +3273,13 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Instalación, idiomas y comprobación}
 	
 	\begin{lstlisting}
-	sudo apt install ocrmypdf tesseract-ocr-spa unpaper pngquant jbig2
-	ocrmypdf --version
-	tesseract --version
-	tesseract --list-langs              # idiomas instalados (eng, osd, spa...)
-	apt-cache search tesseract-ocr- | less   # paquetes de idiomas disponibles
-	# ejemplo: francés y portugués
-	sudo apt install tesseract-ocr-fra tesseract-ocr-por
+sudo apt install ocrmypdf tesseract-ocr-spa unpaper pngquant jbig2
+ocrmypdf --version
+tesseract --version
+tesseract --list-langs              # idiomas instalados (eng, osd, spa...)
+apt-cache search tesseract-ocr- | less   # paquetes de idiomas disponibles
+# ejemplo: francés y portugués
+sudo apt install tesseract-ocr-fra tesseract-ocr-por
 \end{lstlisting}
 	
 	Los datos de idioma se guardan en \arch{/\allowbreak{}usr/\allowbreak{}share/\allowbreak{}tesseract-\allowbreak{}ocr/\allowbreak{}5/\allowbreak{}tessdata/}. El paquete \texttt{osd} (detección de orientación y escritura) es el que usa \opt{-{}-rotate-pages}.
@@ -3304,12 +3304,12 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Sintaxis}
 	
 	\begin{lstlisting}[style=sintaxis]
-  ocrmypdf [opciones] <entrada.pdf | imagen | -> <salida.pdf | ->
+ocrmypdf [opciones] <entrada.pdf | imagen | -> <salida.pdf | ->
 \end{lstlisting}
 	
 	\begin{lstlisting}
-	ocrmypdf entrada.pdf salida.pdf          # idioma predeterminado: inglés
-	ocrmypdf -l spa entrada.pdf salida.pdf   # español
+ocrmypdf entrada.pdf salida.pdf          # idioma predeterminado: inglés
+ocrmypdf -l spa entrada.pdf salida.pdf   # español
 \end{lstlisting}
 	
 	El archivo de salida se sobrescribe si existe. Si la salida es el mismo archivo que la entrada, la entrada solo se actualiza si el proceso termina bien.
@@ -3393,35 +3393,35 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Ejemplos}
 	
 	\begin{lstlisting}
-	cd /mnt/c/Users/NOMBRE/Downloads
-	
-	# OCR en español
-	ocrmypdf -l spa "acta escaneada.pdf" "acta escaneada_ocr.pdf"
-	
-	# Documento bilingüe, páginas giradas o inclinadas, limpieza para el OCR
-	ocrmypdf -l spa+eng --rotate-pages --deskew --clean escaneo.pdf escaneo_ocr.pdf
-	
-	# Guardar también el texto reconocido
-	ocrmypdf -l spa --sidecar escaneo.txt escaneo.pdf escaneo_ocr.pdf
-	
-	# Solo el texto, sin generar PDF
-	ocrmypdf -l spa --sidecar escaneo.txt --output-type none escaneo.pdf -
-	
-	# PDF mixto: páginas digitales y escaneadas
-	ocrmypdf -l spa --skip-text mixto.pdf mixto_ocr.pdf
-	
-	# Rehacer un OCR antiguo de mala calidad
-	ocrmypdf -l spa --redo-ocr ocr_antiguo.pdf ocr_nuevo.pdf
-	
-	# Cambiar lo mínimo el original (sin conversión a PDF/A)
-	ocrmypdf -l spa --output-type pdf escaneo.pdf escaneo_ocr.pdf
-	
-	# Archivo más pequeño (con pérdida en imágenes)
-	ocrmypdf -l spa -O 3 --jpeg-quality 70 escaneo.pdf escaneo_ligero.pdf
-	
-	# Desde imágenes: una imagen directamente, o varias a través de img2pdf
-	ocrmypdf -l spa --image-dpi 300 pagina.png pagina_ocr.pdf
-	img2pdf --pagesize A4 pag_*.jpg | ocrmypdf -l spa - documento_ocr.pdf
+cd /mnt/c/Users/NOMBRE/Downloads
+
+# OCR en español
+ocrmypdf -l spa "acta escaneada.pdf" "acta escaneada_ocr.pdf"
+
+# Documento bilingüe, páginas giradas o inclinadas, limpieza para el OCR
+ocrmypdf -l spa+eng --rotate-pages --deskew --clean escaneo.pdf escaneo_ocr.pdf
+
+# Guardar también el texto reconocido
+ocrmypdf -l spa --sidecar escaneo.txt escaneo.pdf escaneo_ocr.pdf
+
+# Solo el texto, sin generar PDF
+ocrmypdf -l spa --sidecar escaneo.txt --output-type none escaneo.pdf -
+
+# PDF mixto: páginas digitales y escaneadas
+ocrmypdf -l spa --skip-text mixto.pdf mixto_ocr.pdf
+
+# Rehacer un OCR antiguo de mala calidad
+ocrmypdf -l spa --redo-ocr ocr_antiguo.pdf ocr_nuevo.pdf
+
+# Cambiar lo mínimo el original (sin conversión a PDF/A)
+ocrmypdf -l spa --output-type pdf escaneo.pdf escaneo_ocr.pdf
+
+# Archivo más pequeño (con pérdida en imágenes)
+ocrmypdf -l spa -O 3 --jpeg-quality 70 escaneo.pdf escaneo_ligero.pdf
+
+# Desde imágenes: una imagen directamente, o varias a través de img2pdf
+ocrmypdf -l spa --image-dpi 300 pagina.png pagina_ocr.pdf
+img2pdf --pagesize A4 pag_*.jpg | ocrmypdf -l spa - documento_ocr.pdf
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
@@ -3438,13 +3438,13 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Procesamiento por lotes}
 	
 	\begin{lstlisting}
-	mkdir -p ~/trabajo/ocr
-	for f in ~/trabajo/escaneos/*.pdf; do
-	out="$HOME/trabajo/ocr/$(basename "$f")"
-	[ -e "$out" ] && continue                     # reanudar sin repetir
-	ocrmypdf -l spa --rotate-pages --deskew --skip-text --jobs 4 "$f" "$out" \
-	|| echo "Fallo ($?) en: $f" >> ~/trabajo/ocr/errores.log
-	done
+mkdir -p ~/trabajo/ocr
+for f in ~/trabajo/escaneos/*.pdf; do
+    out="$HOME/trabajo/ocr/$(basename "$f")"
+    [ -e "$out" ] && continue                     # reanudar sin repetir
+    ocrmypdf -l spa --rotate-pages --deskew --skip-text --jobs 4 "$f" "$out" \
+        || echo "Fallo ($?) en: $f" >> ~/trabajo/ocr/errores.log
+done
 \end{lstlisting}
 	
 	OCRmyPDF ya usa varios núcleos por documento: procese los archivos de uno en uno y regule los núcleos con \opt{-{}-jobs}.
@@ -3557,9 +3557,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Instalación y comprobación}
 	
 	\begin{lstlisting}
-  sudo apt install ghostscript
-  gs --version                                 # número de versión
-  gs -h | sed -n '/Available devices/,/Search path/p'   # dispositivos disponibles
+sudo apt install ghostscript
+gs --version                                 # número de versión
+gs -h | sed -n '/Available devices/,/Search path/p'   # dispositivos disponibles
 \end{lstlisting}
 	
 	El paquete instala además guiones que llaman a \cmd{gs} con opciones predefinidas: \cmd{ps2pdf}, \cmd{pdf2ps}, \cmd{eps2eps}, \cmd{ps2ps}, \cmd{ps2ascii}, \cmd{ps2epsi}\ldots
@@ -3568,7 +3568,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Sintaxis general}
 	
 	\begin{lstlisting}[style=sintaxis]
-  gs [opciones] -sDEVICE=<dispositivo> -o <salida> <entrada> [<entrada2> ...]
+gs [opciones] -sDEVICE=<dispositivo> -o <salida> <entrada> [<entrada2> ...]
 \end{lstlisting}
 	
 	\necesitaespacio{10\baselineskip}
@@ -3620,17 +3620,17 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsubsection{PDF a PDF}
 	
 	\begin{lstlisting}
-	gs -sDEVICE=pdfwrite -o reescrito.pdf original.pdf                  # reescribir
-	gs -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -o reducido.pdf original.pdf
-	gs -sDEVICE=pdfwrite -dFirstPage=2 -dLastPage=5 -o pags_2a5.pdf original.pdf
-	gs -sDEVICE=pdfwrite -sPageList=1,3,5-7 -o seleccion.pdf original.pdf
-	gs -sDEVICE=pdfwrite -sColorConversionStrategy=Gray \
-	-dProcessColorModel=/DeviceGray \
-	-o gris.pdf original.pdf  # escala de grises
-	gs -sDEVICE=pdfwrite -sPAPERSIZE=a4 -dFIXEDMEDIA -dPDFFitPage -o a4.pdf carta.pdf
-	# texto -> contornos
-	gs -sDEVICE=pdfwrite -dNoOutputFonts -o contornos.pdf original.pdf
-	gs -sDEVICE=pdfwrite -o unido.pdf a.pdf b.pdf c.pdf  # unir (reinterpretando)
+gs -sDEVICE=pdfwrite -o reescrito.pdf original.pdf                  # reescribir
+gs -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -o reducido.pdf original.pdf
+gs -sDEVICE=pdfwrite -dFirstPage=2 -dLastPage=5 -o pags_2a5.pdf original.pdf
+gs -sDEVICE=pdfwrite -sPageList=1,3,5-7 -o seleccion.pdf original.pdf
+gs -sDEVICE=pdfwrite -sColorConversionStrategy=Gray \
+    -dProcessColorModel=/DeviceGray \
+    -o gris.pdf original.pdf  # escala de grises
+gs -sDEVICE=pdfwrite -sPAPERSIZE=a4 -dFIXEDMEDIA -dPDFFitPage -o a4.pdf carta.pdf
+# texto -> contornos
+gs -sDEVICE=pdfwrite -dNoOutputFonts -o contornos.pdf original.pdf
+gs -sDEVICE=pdfwrite -o unido.pdf a.pdf b.pdf c.pdf  # unir (reinterpretando)
 \end{lstlisting}
 	
 	\begin{nota}[Unir con Ghostscript o con QPDF]
@@ -3641,35 +3641,35 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsubsection{PDF a imágenes}
 	
 	\begin{lstlisting}
-	gs -sDEVICE=png16m -r150 -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -o \
-	pag-%03d.png doc.pdf
-	gs -sDEVICE=jpeg -dJPEGQ=90 -r150 -o pag-%03d.jpg doc.pdf
-	gs -sDEVICE=pngalpha -r300 -dFirstPage=1 -dLastPage=1 -o portada.png doc.pdf
-	gs -sDEVICE=tiffg4 -r300 -o fax.tif escaneado.pdf  # TIFF multipágina 1 bit
-	gs -sDEVICE=pnggray -r300 -sPageList=4 -o pag4_gris.png doc.pdf
+gs -sDEVICE=png16m -r150 -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -o \
+    pag-%03d.png doc.pdf
+gs -sDEVICE=jpeg -dJPEGQ=90 -r150 -o pag-%03d.jpg doc.pdf
+gs -sDEVICE=pngalpha -r300 -dFirstPage=1 -dLastPage=1 -o portada.png doc.pdf
+gs -sDEVICE=tiffg4 -r300 -o fax.tif escaneado.pdf  # TIFF multipágina 1 bit
+gs -sDEVICE=pnggray -r300 -sPageList=4 -o pag4_gris.png doc.pdf
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{PostScript y EPS}
 	
 	\begin{lstlisting}
-	gs -sDEVICE=ps2write -o salida.ps doc.pdf          # PDF -> PostScript
-	gs -sDEVICE=pdfwrite -o salida.pdf entrada.ps      # PostScript -> PDF
-	gs -sDEVICE=pdfwrite -dEPSCrop -o figura.pdf figura.eps   # EPS -> PDF ajustado
-	gs -sDEVICE=eps2write -dFirstPage=3 -dLastPage=3 -o pag3.eps doc.pdf
-	ps2pdf entrada.ps salida.pdf                       # guiones equivalentes
-	pdf2ps doc.pdf salida.ps
+gs -sDEVICE=ps2write -o salida.ps doc.pdf          # PDF -> PostScript
+gs -sDEVICE=pdfwrite -o salida.pdf entrada.ps      # PostScript -> PDF
+gs -sDEVICE=pdfwrite -dEPSCrop -o figura.pdf figura.eps   # EPS -> PDF ajustado
+gs -sDEVICE=eps2write -dFirstPage=3 -dLastPage=3 -o pag3.eps doc.pdf
+ps2pdf entrada.ps salida.pdf                       # guiones equivalentes
+pdf2ps doc.pdf salida.ps
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Otros usos}
 	
 	\begin{lstlisting}
-	# texto (Poppler suele dar mejor resultado)
-	gs -sDEVICE=txtwrite -o texto.txt doc.pdf
-	gs -q -o - -sDEVICE=inkcov doc.pdf            # cobertura C M Y K por página
-	# cajas de dibujo (se muestran en pantalla)
-	gs -q -dBATCH -dNOPAUSE -sDEVICE=bbox doc.pdf
+# texto (Poppler suele dar mejor resultado)
+gs -sDEVICE=txtwrite -o texto.txt doc.pdf
+gs -q -o - -sDEVICE=inkcov doc.pdf            # cobertura C M Y K por página
+# cajas de dibujo (se muestran en pantalla)
+gs -q -dBATCH -dNOPAUSE -sDEVICE=bbox doc.pdf
 \end{lstlisting}
 	
 	\necesitaespacio{13\baselineskip}
@@ -3703,24 +3703,24 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Las imágenes solo se reducen si su resolución supera 1,5 veces la del preajuste (por ejemplo, con \val{/ebook}, las de más de 225 ppp). La documentación de Ghostscript advierte que \val{/prepress} no significa «máxima calidad»: la salida más fiel al original se obtiene sin \opt{-dPDFSETTINGS} (o con \val{/default}), y los preajustes alteran el documento de varias formas.
 	
 	\begin{lstlisting}
-		# Probar varios preajustes y comparar tamaños
-		for p in screen ebook printer prepress; do
-		gs -q -sDEVICE=pdfwrite -dPDFSETTINGS=/$p -o "doc_$p.pdf" doc.pdf
-		done
-		ls -lh doc.pdf doc_*.pdf
+# Probar varios preajustes y comparar tamaños
+for p in screen ebook printer prepress; do
+    gs -q -sDEVICE=pdfwrite -dPDFSETTINGS=/$p -o "doc_$p.pdf" doc.pdf
+done
+ls -lh doc.pdf doc_*.pdf
 \end{lstlisting}
 	
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Control fino de la resolución}
 	
 	\begin{lstlisting}
-		gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.7 \
-		-dDownsampleColorImages=true -dColorImageResolution=200 \
-		-dColorImageDownsampleType=/Bicubic \
-		-dDownsampleGrayImages=true  -dGrayImageResolution=200 \
-		-dGrayImageDownsampleType=/Bicubic \
-		-dDownsampleMonoImages=true  -dMonoImageResolution=400 \
-		-o medida.pdf doc.pdf
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.7 \
+    -dDownsampleColorImages=true -dColorImageResolution=200 \
+    -dColorImageDownsampleType=/Bicubic \
+    -dDownsampleGrayImages=true  -dGrayImageResolution=200 \
+    -dGrayImageDownsampleType=/Bicubic \
+    -dDownsampleMonoImages=true  -dMonoImageResolution=400 \
+    -o medida.pdf doc.pdf
 \end{lstlisting}
 	
 	\necesitaespacio{24\baselineskip}
@@ -3752,8 +3752,8 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{PDF/A}
 	
 	\begin{lstlisting}
-	gs -dPDFA=2 -dPDFACompatibilityPolicy=1 -sColorConversionStrategy=RGB \
-	-sDEVICE=pdfwrite -o archivo_pdfa.pdf doc.pdf
+gs -dPDFA=2 -dPDFACompatibilityPolicy=1 -sColorConversionStrategy=RGB \
+    -sDEVICE=pdfwrite -o archivo_pdfa.pdf doc.pdf
 \end{lstlisting}
 	
 	Genera un PDF orientado a PDF/A-2, pero la conformidad estricta puede requerir más ajustes (perfil de color de salida). Para archivo, OCRmyPDF genera PDF/A de forma más automática; en ambos casos conviene comprobar el resultado con un validador como veraPDF.
@@ -3975,11 +3975,11 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\flujoh{PDF digital,Marker,Markdown + imágenes}
 	
 	\begin{lstlisting}
-  pdffonts articulo.pdf | head        # 1) confirmar que tiene texto (hay fuentes)
-  source ~/marker-env/bin/activate
-  # 2)
-  marker_single articulo.pdf --output_dir md --mode fast --ocr_inline_math true
-  ls md/articulo/  # 3) articulo.md, articulo_meta.json, imágenes
+pdffonts articulo.pdf | head        # 1) confirmar que tiene texto (hay fuentes)
+source ~/marker-env/bin/activate
+# 2)
+marker_single articulo.pdf --output_dir md --mode fast --ocr_inline_math true
+ls md/articulo/  # 3) articulo.md, articulo_meta.json, imágenes
 \end{lstlisting}
 	
 	\textbf{Por qué así:} Poppler confirma en un segundo que el PDF es digital; Marker usa entonces el texto incrustado (rápido) y solo recurre al modelo de visión para fórmulas. Sin fórmulas, \opt{-{}-disable\_ocr} es aún más rápido.
@@ -3990,10 +3990,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\flujo{PDF escaneado,OCRmyPDF,PDF con capa de texto,Marker (-\kern0pt-disable\_ocr),Markdown}
 	
 	\begin{lstlisting}
-	ocrmypdf -l spa --rotate-pages --deskew escaneo.pdf escaneo_ocr.pdf
-	pdftotext -l 1 escaneo_ocr.pdf - | head          # comprobar que ya hay texto
-	source ~/marker-env/bin/activate
-	marker_single escaneo_ocr.pdf --output_dir md --disable_ocr
+ocrmypdf -l spa --rotate-pages --deskew escaneo.pdf escaneo_ocr.pdf
+pdftotext -l 1 escaneo_ocr.pdf - | head          # comprobar que ya hay texto
+source ~/marker-env/bin/activate
+marker_single escaneo_ocr.pdf --output_dir md --disable_ocr
 \end{lstlisting}
 	
 	\textbf{Por qué así:} en un equipo sin GPU, Tesseract (dentro de OCRmyPDF) reconoce el texto con menos recursos que el modelo de visión de Marker, y Marker se limita a estructurarlo. \textbf{Cuándo no:} si el escaneo contiene fórmulas o tablas complejas y el equipo lo permite, es mejor \cmd{marker\_\allowbreak{}single escaneo.pdf -{}-force\_\allowbreak{}ocr}, que reconoce directamente con mayor calidad.
@@ -4004,12 +4004,12 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\flujo{doc.pdf,Poppler (pdftoppm),PNG por página,ImageMagick (mogrify),PNG procesados,img2pdf,doc\_procesado.pdf}
 	
 	\begin{lstlisting}
-	mkdir -p pags proc
-	pdftoppm -png -r 300 doc.pdf pags/p                        # 1) rasterizar
-	# 2) blanquear fondo
-	magick mogrify -path proc -colorspace Gray -level 15%,90% pags/*.png
-	# 3) reempaquetar a tamaño real
-	img2pdf --imgsize 300dpi proc/*.png -o doc_procesado.pdf
+mkdir -p pags proc
+pdftoppm -png -r 300 doc.pdf pags/p                        # 1) rasterizar
+# 2) blanquear fondo
+magick mogrify -path proc -colorspace Gray -level 15%,90% pags/*.png
+# 3) reempaquetar a tamaño real
+img2pdf --imgsize 300dpi proc/*.png -o doc_procesado.pdf
 \end{lstlisting}
 	
 	\textbf{Por qué así:} Poppler rasteriza mejor y con menos memoria que ImageMagick; ImageMagick hace el retoque; img2pdf empaqueta sin recomprimir. \opt{-{}-imgsize 300dpi} asegura que las páginas recuperen su tamaño físico. \textbf{Importante:} el resultado es un PDF de imágenes; si el original tenía texto seleccionable, se pierde (aplique OCR después si lo necesita).
@@ -4020,9 +4020,9 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\flujo{logo.png,ImageMagick,logo.pbm (blanco y negro),Potrace,logo.svg / logo.pdf}
 	
 	\begin{lstlisting}
-	magick logo.png -colorspace Gray -threshold 50% logo.pbm   # 1) blanco y negro
-	potrace logo.pbm -s -t 4 -o logo.svg                       # 2) vector SVG
-	potrace logo.pbm -b pdf -o logo.pdf                        # o PDF para LaTeX
+magick logo.png -colorspace Gray -threshold 50% logo.pbm   # 1) blanco y negro
+potrace logo.pbm -s -t 4 -o logo.svg                       # 2) vector SVG
+potrace logo.pbm -b pdf -o logo.pdf                        # o PDF para LaTeX
 \end{lstlisting}
 	
 	\textbf{Por qué así:} Potrace solo admite PBM/PGM/PPM/BMP y traza una frontera entre dos colores; ImageMagick controla con precisión esa frontera (el umbral).
@@ -4033,12 +4033,12 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\flujo{informe.md,Pandoc,informe.tex,latexmk / xelatex,informe.pdf}
 	
 	\begin{lstlisting}
-	# Vía directa (Pandoc llama al motor y borra los intermedios)
-	pandoc informe.md -o informe.pdf --toc -N -M lang=es -V geometry:margin=2.5cm
-	
-	# Vía controlada: generar LaTeX, revisarlo y compilarlo
-	pandoc informe.md -s -o informe.tex -M lang=es -V geometry:margin=2.5cm
-	latexmk -pdf informe.tex        # o latexmk -xelatex si usa fuentes del sistema
+# Vía directa (Pandoc llama al motor y borra los intermedios)
+pandoc informe.md -o informe.pdf --toc -N -M lang=es -V geometry:margin=2.5cm
+
+# Vía controlada: generar LaTeX, revisarlo y compilarlo
+pandoc informe.md -s -o informe.tex -M lang=es -V geometry:margin=2.5cm
+latexmk -pdf informe.tex        # o latexmk -xelatex si usa fuentes del sistema
 \end{lstlisting}
 	
 	\textbf{Por qué así:} la vía directa es cómoda; la controlada permite corregir el \arch{.tex} cuando el PDF no queda como se espera y ver los mensajes completos de LaTeX.
@@ -4049,10 +4049,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Antes de optimizar, averigüe \emph{por qué} pesa el PDF:
 	
 	\begin{lstlisting}
-	pdfinfo doc.pdf | grep -E 'Pages|File size|Optimized'
-	# ¿muchas imágenes, de alta resolución (x-ppi)?
-	pdfimages -list doc.pdf | head -20
-	pdffonts doc.pdf  # ¿fuentes completas sin subconjunto (sub = no)?
+pdfinfo doc.pdf | grep -E 'Pages|File size|Optimized'
+# ¿muchas imágenes, de alta resolución (x-ppi)?
+pdfimages -list doc.pdf | head -20
+pdffonts doc.pdf  # ¿fuentes completas sin subconjunto (sub = no)?
 \end{lstlisting}
 	
 	\begingroup\small
@@ -4069,12 +4069,12 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\endgroup
 	
 	\begin{lstlisting}
-	# Probar las tres estrategias y quedarse con la más pequeña (revisando la calidad)
-	qpdf --object-streams=generate --recompress-flate --compression-level=9 doc.pdf \
-	op_qpdf.pdf
-	gs -q -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -o op_gs.pdf doc.pdf
-	qpdf --linearize op_gs.pdf op_gs_web.pdf       # Ghostscript + linealización
-	ls -lS doc.pdf op_*.pdf                         # ordenados por tamaño
+# Probar las tres estrategias y quedarse con la más pequeña (revisando la calidad)
+qpdf --object-streams=generate --recompress-flate --compression-level=9 doc.pdf \
+    op_qpdf.pdf
+gs -q -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -o op_gs.pdf doc.pdf
+qpdf --linearize op_gs.pdf op_gs_web.pdf       # Ghostscript + linealización
+ls -lS doc.pdf op_*.pdf                         # ordenados por tamaño
 \end{lstlisting}
 	
 	\textbf{Por qué así:} QPDF no pierde calidad, así que se prueba primero; Ghostscript reduce imágenes (con pérdida); OCRmyPDF optimiza escaneos con técnicas específicas (JBIG2, cuantización). Combinar Ghostscript y después QPDF permite reducir y linealizar.
@@ -4083,18 +4083,18 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\subsection{Flujo 7: inspección y reparación}\label{sec:flujo7}
 	
 	\begin{lstlisting}
-	# 1) Diagnóstico
-	pdfinfo doc.pdf; pdffonts doc.pdf
-	qpdf --check doc.pdf; echo "codigo: $?"         # 0 bien, 2 errores, 3 avisos
-	# 2) Reparación estructural (sin tocar el contenido)
-	qpdf doc.pdf reparado.pdf
-	# 3) Si persiste: reinterpretar el contenido
-	gs -sDEVICE=pdfwrite -o reparado_gs.pdf doc.pdf
-	# 4) Último recurso: reescribir con Cairo
-	pdftocairo -pdf doc.pdf reparado_cairo.pdf
-	# 5) Verificar el resultado
-	qpdf --check reparado.pdf && pdftotext -l 1 reparado.pdf - | head
-	pdftoppm -png -r 72 -f 1 -l 1 reparado.pdf control && explorer.exe control-1.png
+# 1) Diagnóstico
+pdfinfo doc.pdf; pdffonts doc.pdf
+qpdf --check doc.pdf; echo "codigo: $?"         # 0 bien, 2 errores, 3 avisos
+# 2) Reparación estructural (sin tocar el contenido)
+qpdf doc.pdf reparado.pdf
+# 3) Si persiste: reinterpretar el contenido
+gs -sDEVICE=pdfwrite -o reparado_gs.pdf doc.pdf
+# 4) Último recurso: reescribir con Cairo
+pdftocairo -pdf doc.pdf reparado_cairo.pdf
+# 5) Verificar el resultado
+qpdf --check reparado.pdf && pdftotext -l 1 reparado.pdf - | head
+pdftoppm -png -r 72 -f 1 -l 1 reparado.pdf control && explorer.exe control-1.png
 \end{lstlisting}
 	
 	\textbf{Por qué así:} Poppler informa sin modificar nada; QPDF repara estructura sin riesgo para el contenido; Ghostscript y Cairo reinterpretan (más agresivos, más capaces con daños de contenido). Se avanza de lo menos a lo más invasivo.
@@ -4105,11 +4105,11 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\flujo{fotos o escaneos JPG/PNG,img2pdf,escaneo.pdf,OCRmyPDF (OCR + limpieza + -O 2),escaneo\_ocr.pdf (buscable y ligero)}
 	
 	\begin{lstlisting}
-	img2pdf --pagesize A4 --rotation=ifvalid escaneos/*.jpg -o escaneo.pdf
-	ocrmypdf -l spa --rotate-pages --deskew --clean -O 2 \
-	--sidecar escaneo.txt escaneo.pdf escaneo_ocr.pdf
-	pdffonts escaneo_ocr.pdf | grep -i glyph        # capa OCR presente
-	ls -lh escaneo.pdf escaneo_ocr.pdf
+img2pdf --pagesize A4 --rotation=ifvalid escaneos/*.jpg -o escaneo.pdf
+ocrmypdf -l spa --rotate-pages --deskew --clean -O 2 \
+    --sidecar escaneo.txt escaneo.pdf escaneo_ocr.pdf
+pdffonts escaneo_ocr.pdf | grep -i glyph        # capa OCR presente
+ls -lh escaneo.pdf escaneo_ocr.pdf
 \end{lstlisting}
 	
 	\textbf{Por qué así:} img2pdf crea el PDF sin degradar las fotos; OCRmyPDF endereza, reconoce y comprime (JBIG2 sin pérdida para páginas en blanco y negro si \texttt{jbig2} está instalado). Para archivo a largo plazo, deje la salida PDF/A predeterminada; para cambiar lo mínimo, \opt{-{}-output-\allowbreak{}type pdf}.
@@ -4124,10 +4124,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\flujo{escaneado.pdf,pdftoppm (gris{,} 300 ppp),PNG,ImageMagick (limpieza),PNG limpios,img2pdf + OCRmyPDF,limpio\_ocr.pdf}
 	
 	\begin{lstlisting}
-	mkdir -p r l
-	pdftoppm -gray -r 300 -png escaneado.pdf r/p
-	magick mogrify -path l -level 25%,85% -fuzz 10% -trim +repage r/*.png
-	img2pdf --imgsize 300dpi l/*.png | ocrmypdf -l spa - limpio_ocr.pdf
+mkdir -p r l
+pdftoppm -gray -r 300 -png escaneado.pdf r/p
+magick mogrify -path l -level 25%,85% -fuzz 10% -trim +repage r/*.png
+img2pdf --imgsize 300dpi l/*.png | ocrmypdf -l spa - limpio_ocr.pdf
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
@@ -4136,43 +4136,43 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	Este script recorre una carpeta de PDF, detecta si cada uno es escaneado (sin fuentes), aplica OCR solo cuando hace falta, extrae el texto y, opcionalmente, convierte a Markdown con Marker. Registra los errores y puede reanudarse.
 	
 	\begin{lstlisting}
-	#!/usr/bin/env bash
-	# masivo.sh - OCR selectivo + texto + Markdown para todos los PDF de ENTRADA
-	set -u
-	shopt -s nullglob
-	ENTRADA="$HOME/trabajo/entrada"
-	SALIDA="$HOME/trabajo/salida"
-	# ejecutable del entorno, sin activarlo
-	MARKER="$HOME/marker-env/bin/marker_single"
-	mkdir -p "$SALIDA"/{pdf,txt,md}
-	LOG="$SALIDA/registro.log"
-	
-	for f in "$ENTRADA"/*.pdf; do
-	b="$(basename "$f" .pdf)"
-	pdf="$SALIDA/pdf/$b.pdf"
-	[ -e "$SALIDA/txt/$b.txt" ] && { echo "Omitido (ya hecho): $b"; continue; }
-	
-	nfuentes=$(pdffonts "$f" 2>/dev/null | tail -n +3 | wc -l)
-	if [ "$nfuentes" -eq 0 ]; then
-	echo "OCR: $b"
-	ocrmypdf -q -l spa --rotate-pages --deskew "$f" "$pdf" \
-	|| { echo "ERROR ocrmypdf ($?): $b" >> "$LOG"; continue; }
-	else
-	cp "$f" "$pdf"                             # digital: se copia tal cual
-	fi
-	
-	pdftotext -layout "$pdf" "$SALIDA/txt/$b.txt" || echo "ERROR pdftotext: $b" \
-	>> "$LOG"
-	"$MARKER" "$pdf" --output_dir "$SALIDA/md" --disable_ocr \
-	|| echo "ERROR marker: $b" >> "$LOG"
-	done
-	echo "Terminado. Errores registrados en: $LOG"
+#!/usr/bin/env bash
+# masivo.sh - OCR selectivo + texto + Markdown para todos los PDF de ENTRADA
+set -u
+shopt -s nullglob
+ENTRADA="$HOME/trabajo/entrada"
+SALIDA="$HOME/trabajo/salida"
+# ejecutable del entorno, sin activarlo
+MARKER="$HOME/marker-env/bin/marker_single"
+mkdir -p "$SALIDA"/{pdf,txt,md}
+LOG="$SALIDA/registro.log"
+
+for f in "$ENTRADA"/*.pdf; do
+    b="$(basename "$f" .pdf)"
+    pdf="$SALIDA/pdf/$b.pdf"
+    [ -e "$SALIDA/txt/$b.txt" ] && { echo "Omitido (ya hecho): $b"; continue; }
+
+    nfuentes=$(pdffonts "$f" 2>/dev/null | tail -n +3 | wc -l)
+    if [ "$nfuentes" -eq 0 ]; then
+        echo "OCR: $b"
+        ocrmypdf -q -l spa --rotate-pages --deskew "$f" "$pdf" \
+            || { echo "ERROR ocrmypdf ($?): $b" >> "$LOG"; continue; }
+    else
+        cp "$f" "$pdf"                             # digital: se copia tal cual
+    fi
+
+    pdftotext -layout "$pdf" "$SALIDA/txt/$b.txt" || echo "ERROR pdftotext: $b" \
+        >> "$LOG"
+    "$MARKER" "$pdf" --output_dir "$SALIDA/md" --disable_ocr \
+        || echo "ERROR marker: $b" >> "$LOG"
+done
+echo "Terminado. Errores registrados en: $LOG"
 \end{lstlisting}
 	
 	\begin{lstlisting}
-	chmod +x masivo.sh
-	# ver y guardar la salida a la vez
-	./masivo.sh 2>&1 | tee ~/trabajo/salida/consola.log
+chmod +x masivo.sh
+# ver y guardar la salida a la vez
+./masivo.sh 2>&1 | tee ~/trabajo/salida/consola.log
 \end{lstlisting}
 	
 	\textbf{Por qué así:} \cmd{pdffonts} decide en milisegundos si hace falta OCR, lo que evita procesar de nuevo PDF digitales; las comprobaciones \texttt{[ -e ... ]} permiten reanudar; el ejecutable de Marker se llama con su ruta dentro del entorno, sin necesidad de activarlo en el script. Si no necesita Markdown, elimine las dos líneas de Marker; si los documentos tienen fórmulas, quite \opt{-{}-disable\_ocr}.
@@ -4434,127 +4434,127 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\necesitaespacio{8\baselineskip}
 	\subsection*{Entorno}
 	\begin{lstlisting}
-	cd /mnt/c/Users/NOMBRE/Downloads        # Descargas de Windows
-	explorer.exe .                          # abrir la carpeta actual en Windows
-	wslpath 'C:\Users\NOMBRE\Documents'     # traducir una ruta de Windows
-	source ~/marker-env/bin/activate        # activar el entorno de Marker
+cd /mnt/c/Users/NOMBRE/Downloads        # Descargas de Windows
+explorer.exe .                          # abrir la carpeta actual en Windows
+wslpath 'C:\Users\NOMBRE\Documents'     # traducir una ruta de Windows
+source ~/marker-env/bin/activate        # activar el entorno de Marker
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection*{Marker}
 	\begin{lstlisting}
-	marker_single doc.pdf --output_dir md                       # PDF -> Markdown
-	# solo 2 primeras páginas (desde 0)
-	marker_single doc.pdf --output_dir md --page_range "0-1"
-	marker_single doc.pdf --output_dir md --mode fast --ocr_inline_math true
-	marker_single doc.pdf --output_dir md --disable_ocr         # sin modelo de visión
-	marker_single doc.pdf --output_dir md --force_ocr           # reconocer todo
-	marker_single doc.pdf --output_dir js --output_format json
-	marker carpeta_pdf --output_dir md --skip_existing          # lote
+marker_single doc.pdf --output_dir md                       # PDF -> Markdown
+# solo 2 primeras páginas (desde 0)
+marker_single doc.pdf --output_dir md --page_range "0-1"
+marker_single doc.pdf --output_dir md --mode fast --ocr_inline_math true
+marker_single doc.pdf --output_dir md --disable_ocr         # sin modelo de visión
+marker_single doc.pdf --output_dir md --force_ocr           # reconocer todo
+marker_single doc.pdf --output_dir js --output_format json
+marker carpeta_pdf --output_dir md --skip_existing          # lote
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection*{Poppler}
 	\begin{lstlisting}
-	pdfinfo archivo.pdf
-	pdffonts archivo.pdf
-	pdftotext archivo.pdf salida.txt
-	pdftotext -layout -f 1 -l 3 archivo.pdf -
-	pdftoppm -png archivo.pdf pagina
-	pdftoppm -jpeg -jpegopt quality=85 -r 150 archivo.pdf pagina
-	pdftoppm -png -r 300 -f 2 -l 2 -singlefile archivo.pdf pag2
-	pdftocairo -svg -f 1 -l 1 archivo.pdf pag1.svg
-	pdfimages -list archivo.pdf ; pdfimages -all archivo.pdf img
-	pdftohtml -s -noframes archivo.pdf archivo.html
-	pdftops archivo.pdf archivo.ps
-	pdfseparate archivo.pdf pagina-%d.pdf
-	pdfunite a.pdf b.pdf unido.pdf          # el último es la SALIDA
+pdfinfo archivo.pdf
+pdffonts archivo.pdf
+pdftotext archivo.pdf salida.txt
+pdftotext -layout -f 1 -l 3 archivo.pdf -
+pdftoppm -png archivo.pdf pagina
+pdftoppm -jpeg -jpegopt quality=85 -r 150 archivo.pdf pagina
+pdftoppm -png -r 300 -f 2 -l 2 -singlefile archivo.pdf pag2
+pdftocairo -svg -f 1 -l 1 archivo.pdf pag1.svg
+pdfimages -list archivo.pdf ; pdfimages -all archivo.pdf img
+pdftohtml -s -noframes archivo.pdf archivo.html
+pdftops archivo.pdf archivo.ps
+pdfseparate archivo.pdf pagina-%d.pdf
+pdfunite a.pdf b.pdf unido.pdf          # el último es la SALIDA
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection*{img2pdf}
 	\begin{lstlisting}
-	img2pdf *.png -o documento.pdf
-	img2pdf --pagesize A4 --auto-orient *.jpg -o documento.pdf
-	img2pdf --pagesize A4 --border 1cm --rotation=ifvalid IMG_*.jpg -o movil.pdf
-	find . -maxdepth 1 -name '*.png' -print0 | sort -zV | img2pdf --from-file - -o natural.pdf
+img2pdf *.png -o documento.pdf
+img2pdf --pagesize A4 --auto-orient *.jpg -o documento.pdf
+img2pdf --pagesize A4 --border 1cm --rotation=ifvalid IMG_*.jpg -o movil.pdf
+find . -maxdepth 1 -name '*.png' -print0 | sort -zV | img2pdf --from-file - -o natural.pdf
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection*{ImageMagick}
 	\begin{lstlisting}
-	magick imagen.png imagen.jpg
-	magick imagen.png -resize 50% salida.png
-	magick foto.jpg -resize "1920x1080>" -quality 82 -strip web.jpg
-	magick foto.jpg -crop 800x600+100+50 +repage recorte.jpg
-	magick foto.jpg -colorspace Gray gris.jpg
-	magick a.jpg b.jpg +append juntas.jpg
-	magick -density 300 "doc.pdf[0]" -background white -alpha remove -alpha off pag1.png
-	mkdir -p web && magick mogrify -path web -resize 50% *.jpg
-	magick identify -format "%f %wx%h\n" *.jpg
+magick imagen.png imagen.jpg
+magick imagen.png -resize 50% salida.png
+magick foto.jpg -resize "1920x1080>" -quality 82 -strip web.jpg
+magick foto.jpg -crop 800x600+100+50 +repage recorte.jpg
+magick foto.jpg -colorspace Gray gris.jpg
+magick a.jpg b.jpg +append juntas.jpg
+magick -density 300 "doc.pdf[0]" -background white -alpha remove -alpha off pag1.png
+mkdir -p web && magick mogrify -path web -resize 50% *.jpg
+magick identify -format "%f %wx%h\n" *.jpg
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection*{Potrace}
 	\begin{lstlisting}
-	magick logo.png -colorspace Gray -threshold 50% logo.pbm
-	potrace logo.pbm -s -o logo.svg
-	potrace imagen.bmp -s -o salida.svg
-	potrace -b pdf logo.pbm -o logo.pdf
-	mkbitmap -f 2 -s 2 -t 0.48 dibujo.pgm -o dibujo.pbm
+magick logo.png -colorspace Gray -threshold 50% logo.pbm
+potrace logo.pbm -s -o logo.svg
+potrace imagen.bmp -s -o salida.svg
+potrace -b pdf logo.pbm -o logo.pdf
+mkbitmap -f 2 -s 2 -t 0.48 dibujo.pgm -o dibujo.pbm
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection*{Pandoc}
 	\begin{lstlisting}
-	pandoc documento.md -o documento.docx
-	pandoc documento.md -o documento.pdf --toc -N -M lang=es -V geometry:margin=2.5cm
-	pandoc documento.md -o documento.pdf --pdf-engine=xelatex -M lang=es
-	pandoc documento.md -s -o documento.tex
-	pandoc documento.md -s --embed-resources -o documento.html
-	pandoc documento.docx -t gfm --extract-media=img -o documento.md
-	pandoc pagina.html -t gfm -o pagina.md
+pandoc documento.md -o documento.docx
+pandoc documento.md -o documento.pdf --toc -N -M lang=es -V geometry:margin=2.5cm
+pandoc documento.md -o documento.pdf --pdf-engine=xelatex -M lang=es
+pandoc documento.md -s -o documento.tex
+pandoc documento.md -s --embed-resources -o documento.html
+pandoc documento.docx -t gfm --extract-media=img -o documento.md
+pandoc pagina.html -t gfm -o pagina.md
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection*{QPDF}
 	\begin{lstlisting}
-	qpdf --check archivo.pdf
-	qpdf --show-npages archivo.pdf
-	qpdf --empty --pages a.pdf b.pdf -- unido.pdf
-	qpdf archivo.pdf --pages . 1-3,7 -- extracto.pdf
-	qpdf --split-pages archivo.pdf pag-%d.pdf
-	qpdf archivo.pdf girado.pdf --rotate=+90:1
-	qpdf archivo.pdf reparado.pdf
-	qpdf --linearize archivo.pdf web.pdf
-	qpdf --encrypt --user-password=U --owner-password=P --bits=256 -- archivo.pdf cifrado.pdf
-	qpdf --password=P --decrypt cifrado.pdf descifrado.pdf
+qpdf --check archivo.pdf
+qpdf --show-npages archivo.pdf
+qpdf --empty --pages a.pdf b.pdf -- unido.pdf
+qpdf archivo.pdf --pages . 1-3,7 -- extracto.pdf
+qpdf --split-pages archivo.pdf pag-%d.pdf
+qpdf archivo.pdf girado.pdf --rotate=+90:1
+qpdf archivo.pdf reparado.pdf
+qpdf --linearize archivo.pdf web.pdf
+qpdf --encrypt --user-password=U --owner-password=P --bits=256 -- archivo.pdf cifrado.pdf
+qpdf --password=P --decrypt cifrado.pdf descifrado.pdf
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection*{OCRmyPDF}
 	\begin{lstlisting}
-	ocrmypdf entrada.pdf salida.pdf
-	ocrmypdf -l spa entrada.pdf salida.pdf
-	ocrmypdf -l spa+eng --rotate-pages --deskew --clean entrada.pdf salida.pdf
-	ocrmypdf -l spa --skip-text mixto.pdf salida.pdf
-	ocrmypdf -l spa --redo-ocr ocr_viejo.pdf salida.pdf
-	ocrmypdf -l spa --sidecar texto.txt entrada.pdf salida.pdf
-	ocrmypdf -l spa -O 3 entrada.pdf ligero.pdf
-	tesseract --list-langs
+ocrmypdf entrada.pdf salida.pdf
+ocrmypdf -l spa entrada.pdf salida.pdf
+ocrmypdf -l spa+eng --rotate-pages --deskew --clean entrada.pdf salida.pdf
+ocrmypdf -l spa --skip-text mixto.pdf salida.pdf
+ocrmypdf -l spa --redo-ocr ocr_viejo.pdf salida.pdf
+ocrmypdf -l spa --sidecar texto.txt entrada.pdf salida.pdf
+ocrmypdf -l spa -O 3 entrada.pdf ligero.pdf
+tesseract --list-langs
 \end{lstlisting}
 	
 	\necesitaespacio{8\baselineskip}
 	\subsection*{Ghostscript}
 	\begin{lstlisting}
-	gs -sDEVICE=pdfwrite -o salida.pdf entrada.pdf
-	gs -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -o reducido.pdf entrada.pdf
-	gs -sDEVICE=png16m -r150 -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -o pag-%03d.png \
-	entrada.pdf
-	gs -sDEVICE=jpeg -dJPEGQ=90 -r150 -o pag-%03d.jpg entrada.pdf
-	gs -sDEVICE=pdfwrite -sPageList=1,3,5-7 -o seleccion.pdf entrada.pdf
-	gs -sDEVICE=ps2write -o salida.ps entrada.pdf
-	ps2pdf entrada.ps salida.pdf
+gs -sDEVICE=pdfwrite -o salida.pdf entrada.pdf
+gs -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -o reducido.pdf entrada.pdf
+gs -sDEVICE=png16m -r150 -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -o pag-%03d.png \
+    entrada.pdf
+gs -sDEVICE=jpeg -dJPEGQ=90 -r150 -o pag-%03d.jpg entrada.pdf
+gs -sDEVICE=pdfwrite -sPageList=1,3,5-7 -o seleccion.pdf entrada.pdf
+gs -sDEVICE=ps2write -o salida.ps entrada.pdf
+ps2pdf entrada.ps salida.pdf
 \end{lstlisting}
 	\endgroup
 	
