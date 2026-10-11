@@ -108,4 +108,4 @@ Los nombres de las herramientas pertenecen a sus respectivos proyectos; esta gu√
 ## Autor
 
 Angel David Ojeda Peralta.  
-[LinkedIn](www.linkedin.com/in/angel-ojeda-2424893a3) | [GitHub](https://github.com/Angel7Ojeda)
+[LinkedIn](https://www.linkedin.com/in/angel-ojeda-2424893a3) | [GitHub](https://github.com/Angel7Ojeda)
