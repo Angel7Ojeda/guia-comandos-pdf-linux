@@ -1,0 +1,34 @@
+# Comprueba cada semana que siguen funcionando los enlaces de la guía y de la
+# documentación. No bloquea las contribuciones: solo avisa si algo se rompe.
+name: Comprobar enlaces
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'   # lunes a las 06:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  enlaces:
+    name: Comprobar enlaces externos
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Extraer las direcciones de la guía
+        run: grep -oE '\\url\{[^}]+\}' src/guia-herramientas.tex | sed -E 's/^\\url\{(.*)\}$/\1/' | sort -u > enlaces-guia.txt
+
+      - name: Comprobar los enlaces
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: >-
+            --no-progress --max-retries 3 --accept 200,206,429
+            --scheme https --scheme http
+            enlaces-guia.txt README.md README.en.md CONTRIBUTING.md SECURITY.md CHANGELOG.md docs/auditoria.md
+          fail: true

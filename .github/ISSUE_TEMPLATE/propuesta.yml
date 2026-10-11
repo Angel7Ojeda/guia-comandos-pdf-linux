@@ -1,0 +1,22 @@
+name: Propuesta de mejora
+description: Nuevo contenido, una herramienta más o una explicación mejorable.
+title: "[Propuesta] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Qué propone
+    validations:
+      required: true
+  - type: textarea
+    id: motivo
+    attributes:
+      label: Por qué sería útil
+    validations:
+      required: true
+  - type: textarea
+    id: fuentes
+    attributes:
+      label: Documentación oficial que lo respalda
+      description: Enlaces a la documentación o a la ayuda (--help, man) de la versión de Ubuntu 26.04.

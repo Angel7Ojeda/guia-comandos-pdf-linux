@@ -1,0 +1,41 @@
+name: Error en un comando
+description: Un comando o una explicación de la guía no funciona como se describe.
+title: "[Error] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Gracias por avisar. Con el comando exacto, el mensaje completo y las versiones se puede reproducir el problema.
+  - type: input
+    id: seccion
+    attributes:
+      label: Sección de la guía
+      description: Número y título, por ejemplo «12.6 Páginas».
+    validations:
+      required: true
+  - type: textarea
+    id: comando
+    attributes:
+      label: Comando ejecutado
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: salida
+    attributes:
+      label: Resultado obtenido (mensaje completo)
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Resultado esperado
+  - type: textarea
+    id: entorno
+    attributes:
+      label: Entorno
+      description: "Salida de `lsb_release -d` y de la versión de la herramienta (por ejemplo, `qpdf --version`)."
+      render: text
+    validations:
+      required: true

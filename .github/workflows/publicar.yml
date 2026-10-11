@@ -1,0 +1,93 @@
+# Publica una versión cuando se sube una etiqueta vX.Y.Z: compila la guía en
+# Ubuntu 26.04, ejecuta la prueba de humo y crea la versión en GitHub con el PDF.
+name: Publicar versión
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+
+permissions:
+  contents: read
+
+jobs:
+  compilar:
+    name: Compilar y comprobar la versión
+    runs-on: ubuntu-24.04
+    container: ubuntu:26.04
+    timeout-minutes: 30
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    steps:
+      - name: Instalar LaTeX y las herramientas de la guía
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates git make \
+            latexmk texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended texlive-lang-spanish lmodern \
+            texlive-xetex fonts-dejavu-core
+          apt-get install -y poppler-utils img2pdf imagemagick potrace pandoc \
+            qpdf ocrmypdf tesseract-ocr-spa ghostscript unpaper pngquant jbig2
+
+      - name: Descargar el repositorio
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Comprobar que la etiqueta coincide con la versión de la guía
+        run: |
+          version=$(sed -n 's/^\\newcommand{\\versionguia}{\([^}]*\)}.*/\1/p' src/guia-herramientas.tex)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::La etiqueta $GITHUB_REF_NAME no coincide con la versión de la guía (v$version)."
+            exit 1
+          fi
+
+      - name: Extraer las notas de la versión del CHANGELOG
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" 'index($0, "## [" v "]") == 1 {f = 1; next} /^## \[/ {f = 0} f' CHANGELOG.md > notas.md
+          if [ ! -s notas.md ]; then
+            echo "::error::CHANGELOG.md no tiene una sección «## [$version]»."
+            exit 1
+          fi
+
+      - name: Compilar y probar
+        run: |
+          make pdf
+          make test
+
+      - name: Preparar los archivos de la versión
+        run: |
+          mkdir -p dist
+          cp build/guia-herramientas.pdf dist/guia-comandos-pdf-linux.pdf
+          cp notas.md dist/notas.md
+          cd dist && sha256sum guia-comandos-pdf-linux.pdf > SHA256SUMS.txt
+
+      - name: Guardar los archivos para el trabajo de publicación
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: version
+          path: dist/
+          if-no-files-found: error
+
+  publicar:
+    name: Crear la versión en GitHub
+    needs: compilar
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Recuperar los archivos compilados
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: version
+          path: dist
+
+      - name: Crear la versión con el PDF adjunto
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            dist/guia-comandos-pdf-linux.pdf dist/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Guía de comandos para PDF en Linux $GITHUB_REF_NAME" \
+            --notes-file dist/notas.md

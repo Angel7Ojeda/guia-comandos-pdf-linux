@@ -1,0 +1,55 @@
+# Compila la guía y ejecuta la prueba de humo dentro de Ubuntu 26.04, es decir,
+# con las mismas versiones de las herramientas que documenta la guía.
+# Se ejecuta en cada cambio de la rama main y en cada solicitud de cambios.
+name: Compilar y probar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compilar-y-probar:
+    name: Compilar el PDF y probar los comandos
+    runs-on: ubuntu-24.04
+    container: ubuntu:26.04
+    timeout-minutes: 30
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    steps:
+      - name: Instalar LaTeX y las herramientas de la guía
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates git make \
+            latexmk texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended texlive-lang-spanish lmodern \
+            texlive-xetex fonts-dejavu-core
+          apt-get install -y poppler-utils img2pdf imagemagick potrace pandoc \
+            qpdf ocrmypdf tesseract-ocr-spa ghostscript unpaper pngquant jbig2
+
+      - name: Descargar el repositorio
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Compilar la guía
+        run: make pdf
+
+      - name: Ejecutar la prueba de humo
+        run: make test
+
+      - name: Guardar el PDF para revisarlo
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: guia-pdf
+          path: build/guia-herramientas.pdf
+          if-no-files-found: error
+          retention-days: 14

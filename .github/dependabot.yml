@@ -1,0 +1,9 @@
+# Mantiene al día las acciones de GitHub, que los flujos fijan por su SHA.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: ci
