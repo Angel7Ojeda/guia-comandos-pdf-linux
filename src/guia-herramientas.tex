@@ -79,6 +79,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	bookmarksnumbered=true,
 	bookmarksopen=true,
 	pdfstartview=FitH,
+	pdfauthor={Angel David Ojeda Peralta},
 	pdftitle={Guía técnica de herramientas de línea de comandos (Ubuntu 26.04 + WSL2)},
 	pdfsubject={Marker, Poppler, img2pdf, ImageMagick, Potrace, Pandoc, QPDF, OCRmyPDF, Ghostscript},
 	pdfkeywords={WSL2, Ubuntu, PDF, OCR, Markdown, LaTeX, Bash}
@@ -341,6 +342,10 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 % =====================================================================
 \newcommand{\wsl}{WSL2}
 \newcommand{\ubu}{Ubuntu 26.04 LTS}
+\newcommand{\bs}{\textbackslash{}}    % barra invertida en el texto
+\newcommand{\tl}{\textasciitilde{}}  % virgulilla (~) en el texto
+% Versión publicada: debe coincidir con la etiqueta de Git vX.Y.Z (lo comprueba la publicación automática).
+\newcommand{\versionguia}{1.0.0}
 
 % =====================================================================
 \begin{document}
@@ -349,6 +354,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	% ---------------------------------------------------------------------
 	% PORTADA
 	% ---------------------------------------------------------------------
+	\pagenumbering{Alph}% portada con numeración propia: evita el ancla page.1 duplicada
 	\begin{titlepage}
 		\thispagestyle{empty}
 		\begin{tikzpicture}[remember picture, overlay]
@@ -360,7 +366,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 			\node[anchor=north west, text=white, font=\sffamily\fontsize{20}{24}\selectfont,
 			align=left, text width=17cm]
 			at ([xshift=2.3cm, yshift=-4cm]current page.north west)
-			{\textit{Angel David Ojeda Peralta · Physicist} | \textit{Database Specialist}};
+			{\textit{Angel David Ojeda Peralta · Físico} | \textit{Bases de datos}};
 			\node[anchor=north west, text=acentoclaro, font=\sffamily\Large, align=left, text width=17cm]
 			at ([xshift=2.3cm, yshift=-5.5cm]current page.north west)
 			{Documentos, imágenes y PDF desde la terminal de\\Ubuntu 26.04 LTS en WSL2 (Windows 11)};
@@ -405,7 +411,8 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 		{\small\color{collimit}Las opciones documentadas se contrastaron con la ayuda integrada de cada programa, sus páginas \texttt{man}, el código o la documentación oficial de cada proyecto. Si su sistema muestra otra versión, compruébela con los comandos de la sección~\ref{sec:instalacion}.}
 		
 		\vspace{0.4cm}
-		{\sffamily\color{acento}Octubre de 2026}
+		{\sffamily\color{acento}Versión \versionguia{} · Octubre de 2026}\par\smallskip
+		{\footnotesize\color{collimit}© 2026 Angel David Ojeda Peralta · Licencia CC BY-NC-SA 4.0\\ Venta y uso comercial solo con autorización escrita del autor.\\ \url{https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es}\par}
 	\end{titlepage}
 	
 	% ---------------------------------------------------------------------
@@ -418,11 +425,6 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 	\endgroup
 	\clearpage
 	\pagenumbering{arabic}
-	% =====================================================================
-	% Atajos para caracteres especiales en texto
-	% =====================================================================
-	\newcommand{\bs}{\textbackslash{}}
-	\newcommand{\tl}{\textasciitilde{}}
 	
 	% =====================================================================
 	\section{Introducción}\label{sec:intro}
@@ -825,7 +827,20 @@ pipx list                # programas instalados con pipx
 	\necesitaespacio{8\baselineskip}
 	\subsection{Marker en el entorno \texttt{\textasciitilde/marker-env}}\label{sec:marker-instalacion}
 	
-	Marker se ejecuta dentro de su entorno virtual. Cada vez que abra una terminal nueva, actívelo antes de usarlo:
+	\paragraph{Crear el entorno (una sola vez)} Ubuntu~26.04 solo incluye Python~3.14, y Marker~2.0.0 exige una versión de Pillow anterior a la~11, que no publica paquetes binarios para Python~3.14. Por eso el entorno usa Python~3.12, que se obtiene con \cmd{uv}: un gestor de entornos de Python que se instala con \cmd{pipx} y descarga un Python independiente del sistema.
+	
+	\begin{lstlisting}
+sudo apt install pipx
+pipx ensurepath                              # abra una terminal nueva después
+pipx install uv
+uv venv --python 3.12 --seed ~/marker-env    # --seed añade pip al entorno
+source ~/marker-env/bin/activate
+pip install marker-pdf                       # o "marker-pdf[full]" (DOCX, PPTX...)
+\end{lstlisting}
+	
+	La instalación descarga PyTorch y sus dependencias (varios gigabytes); la primera conversión descarga además los modelos (sección~\ref{sec:marker-arquitectura}).
+	
+	\paragraph{Usar el entorno} Marker se ejecuta dentro de su entorno virtual. Cada vez que abra una terminal nueva, actívelo antes de usarlo:
 	
 	\begin{lstlisting}
 source ~/marker-env/bin/activate  # el indicador pasa a empezar por (marker-env)
@@ -1401,10 +1416,10 @@ marker_single "informe.pdf" --output_dir ./md_salida --config_json \
 	
 	\begin{lstlisting}[style=salida]
 md_salida/
-informe/
-informe.md            # documento convertido (o .json / .html)
-informe_meta.json     # metadatos: índice detectado y estadísticas por página
-*.jpeg                # imágenes extraídas, enlazadas desde el Markdown
+  informe/
+    informe.md          # documento convertido (o .json / .html)
+    informe_meta.json   # metadatos: índice detectado y estadísticas por página
+    *.jpeg              # imágenes extraídas, enlazadas desde el Markdown
 \end{lstlisting}
 	
 	El archivo \arch{\_meta.json} incluye el índice de títulos detectado (con su nivel y página) y, por cada página, el método con el que se obtuvo el texto. Es útil para comprobar qué páginas necesitaron reconocimiento.
@@ -1919,7 +1934,7 @@ pdfunite pagina-*.pdf unido.pdf      # ojo al orden: ver sección de comodines
 	
 	\begin{lstlisting}
 pdfdetach -list doc.pdf                         # listar archivos adjuntos
-pdfdetach -saveall -o adjuntos/ doc.pdf          # extraerlos todos
+mkdir -p adjuntos && pdfdetach -saveall -o adjuntos/ doc.pdf  # la carpeta debe existir
 pdfdetach -save 1 -o datos.xlsx doc.pdf          # extraer el adjunto número 1
 pdfattach doc.pdf datos.csv doc_con_adjunto.pdf  # añadir un adjunto
 pdfsig doc.pdf                                   # verificar firmas digitales
@@ -1968,6 +1983,7 @@ pdfsig doc.pdf                                   # verificar firmas digitales
 		Imágenes enormes o lentas & Resolución excesiva. & Baje \opt{-r} o use \opt{-scale-to}.\\
 		Nombres \arch{-01}, \arch{-001} inesperados & Relleno con ceros según el número de páginas. & Es intencionado; use \opt{-singlefile} o \opt{-sep} si necesita otro formato.\\
 		Muchos \texttt{Syntax Warning} & PDF imperfecto pero legible. & Revise el resultado; \opt{-q} los oculta. Si hay errores reales, repare con \cmd{qpdf}.\\
+		\texttt{NSS\_Init failed: security library: bad database} (\cmd{pdfsig}) & No existe la base de certificados NSS del usuario; \cmd{pdfsig} sigue informando, pero muestra el aviso. & \cmd{sudo apt install libnss3-\allowbreak{}tools}; después \cmd{mkdir -p \tl/.pki/nssdb \&\& certutil -N -d sql:\$HOME/.pki/nssdb -{}-empty-\allowbreak{}password}.\\
 		\texttt{Permission denied} al escribir en \arch{/mnt/c} & El archivo de destino está abierto en un visor de Windows que lo bloquea. & Cierre el visor o escriba con otro nombre.\\*
 		Se sobrescribió un PDF con \cmd{pdfunite} & Faltaba el nombre de salida. & Use siempre un nombre nuevo como último argumento; trabaje sobre copias.\\
 	\end{errores}
@@ -2167,7 +2183,7 @@ img2pdf --pagesize A4 escaneo_*.png | ocrmypdf -l spa - escaneo_ocr.pdf
 		\endfirsthead
 		\bottomrule
 		\endfoot
-		\cmd{convert} & \cmd{magick} & Convertir y transformar (muestra un aviso de obsolescencia).\\*
+		\cmd{convert} & \cmd{magick} & Convertir y transformar (nombre heredado: véase la nota siguiente).\\*
 		\cmd{mogrify} & \cmd{magick mogrify} & Modificar muchos archivos (por defecto, \emph{sobrescribe}).\\
 		\cmd{identify} & \cmd{magick identify} & Información de una imagen.\\
 		\cmd{montage} & \cmd{magick montage} & Mosaicos y hojas de contacto.\\
@@ -2176,8 +2192,8 @@ img2pdf --pagesize A4 escaneo_*.png | ocrmypdf -l spa - escaneo_ocr.pdf
 	\end{longtable}
 	\endgroup
 	
-	\begin{nota}[Aviso de \texttt{convert}]
-		\cmd{convert} sigue funcionando pero imprime \texttt{WARNING: The convert command is deprecated in IMv7, use "magick" instead}. Use \cmd{magick} en todos los comandos nuevos: además de evitar el aviso, aplica las operaciones estrictamente en el orden escrito.
+	\begin{nota}[La orden \texttt{convert}]
+		En Ubuntu~26.04, \cmd{convert} es un enlace a ImageMagick~7 y funciona sin mostrar ningún aviso; otras compilaciones de ImageMagick~7 imprimen un aviso de obsolescencia que empieza por \texttt{WARNING: The convert command is deprecated in IMv7}. Use \cmd{magick} en todos los comandos nuevos: es la orden propia de la versión~7 y aplica las operaciones estrictamente en el orden escrito.
 	\end{nota}
 	
 	\necesitaespacio{8\baselineskip}
@@ -2518,7 +2534,7 @@ magick a.png b.jpg resultado.pdf
 	
 	\necesitaespacio{10\baselineskip}
 	\begin{errores}
-		\texttt{WARNING: The convert command is deprecated} & Uso del nombre heredado. & Use \cmd{magick}.\\*
+		\texttt{WARNING: The convert command is deprecated} & Nombre heredado en una compilación de ImageMagick~7 que muestra el aviso (el paquete de Ubuntu~26.04 no lo hace). & Use \cmd{magick}.\\*
 		\texttt{cache resources exhausted} & Se superaron los límites de memoria o disco de la política. & Reduzca la resolución o el tamaño; procese por páginas; use Poppler para PDF.\\
 		\texttt{width or height exceeds limit} & Imagen mayor de 32\,000 píxeles de lado. & Reduzca \opt{-density} o divida la imagen.\\
 		\texttt{not allowed by the security policy} & Operación prohibida por \arch{policy.xml} (URL, \arch{@archivo}\ldots). & Use otra vía (descargue con \cmd{wget}, pase los archivos directamente).\\
@@ -2863,10 +2879,10 @@ from: markdown
 to: pdf
 pdf-engine: xelatex
 metadata:
-lang: es
+  lang: es
 variables:
-geometry: margin=2.5cm
-mainfont: DejaVu Serif
+  geometry: margin=2.5cm
+  mainfont: DejaVu Serif
 EOF
 pandoc -d pdf-es.yaml informe.md -o informe.pdf
 
@@ -3069,7 +3085,7 @@ qpdf doc.pdf --pages . 1-z,x2 -- sin_pag2.pdf
 # Invertir el orden
 qpdf doc.pdf --pages . z-1 -- invertido.pdf
 
-# Una página por archivo: pag-1.pdf, pag-2.pdf, ...
+# Una página por archivo: pag-1.pdf, pag-2.pdf... (pag-01.pdf con 10 páginas o más)
 qpdf --split-pages doc.pdf pag-%d.pdf
 
 # Bloques de 10 páginas: bloque-01-10.pdf, bloque-11-20.pdf, ...
@@ -3269,6 +3285,10 @@ qpdf --generate-appearances --flatten-annotations=all formulario.pdf \
 		\item OCRmyPDF conserva las imágenes originales salvo que pida operaciones que las cambian (\opt{-{}-deskew}, \opt{-{}-clean-final}, \opt{-{}-force-ocr} u optimizaciones con pérdida).
 	\end{itemize}
 	
+	\begin{advertencia}[Aviso sobre Ghostscript 10.6]
+		OCRmyPDF~16.13 muestra en cada ejecución el aviso \texttt{Ghostscript 10.6.x contains JPEG encoding errors that may corrupt images}, porque Ubuntu~26.04 incluye Ghostscript~10.06. Según las notas de la versión~16.13 de OCRmyPDF, Ghostscript~10.6 puede truncar entre 1 y 15 bytes de datos JPEG, y OCRmyPDF detecta ese caso y restaura la imagen original. El aviso no significa que el proceso haya fallado, pero conviene revisar las imágenes del resultado. Si no necesita PDF/A, \opt{-{}-output-\allowbreak{}type pdf} evita la conversión a PDF/A con Ghostscript.
+	\end{advertencia}
+	
 	\necesitaespacio{8\baselineskip}
 	\subsection{Instalación, idiomas y comprobación}
 	
@@ -3340,7 +3360,7 @@ ocrmypdf -l spa entrada.pdf salida.pdf   # español
 		\opt{-c}, \opt{-{}-clean} & Limpia la imagen con \cmd{unpaper} \emph{solo para el OCR}; el PDF conserva la imagen original.\\
 		\opt{-i}, \opt{-{}-clean-final} & Limpia y además usa la imagen limpia en el resultado (puede borrar contenido deseado).\\
 		\opt{-{}-unpaper-\allowbreak{}args "ARGS"} & Argumentos adicionales para \cmd{unpaper} (requiere \opt{-{}-clean}).\\
-		\opt{-{}-remove-\allowbreak{}background} & Intenta blanquear el fondo de páginas en gris o color.\\
+		\opt{-{}-remove-\allowbreak{}background} & \textbf{No disponible en OCRmyPDF~16.13}: termina con \texttt{NotImplementedError} (código~15). Para blanquear el fondo, prepare antes las páginas con ImageMagick (sección~\ref{sec:flujo9}).\\
 		\opt{-{}-oversample N} & Remuestrea las imágenes a al menos \val{N} ppp antes del OCR (puede mejorar escaneos de baja resolución).\\*
 		\opt{-{}-remove-\allowbreak{}vectors} & Experimental: ignora objetos vectoriales en el OCR (evita caracteres falsos).\\
 	\end{opciones}
@@ -3529,6 +3549,7 @@ done
 		Muy lento o \texttt{Killed} & Muchas páginas en paralelo, memoria limitada de WSL2. & Baje \opt{-{}-jobs}; aumente memoria en \arch{.wslconfig}.\\
 		Archivo resultante mayor que el original & Conversión a PDF/A o imágenes recomprimidas sin pérdida. & \opt{-{}-output-\allowbreak{}type pdf}, \opt{-O 2}/\opt{-O 3}, o Ghostscript después.\\
 		Páginas giradas por error & Detección de orientación con poca confianza. & Suba \opt{-{}-rotate-\allowbreak{}pages-\allowbreak{}threshold} o quite \opt{-r}.\\*
+		\texttt{Ghostscript 10.6.x contains JPEG encoding errors\ldots} & Aviso informativo: Ubuntu~26.04 incluye Ghostscript~10.06. & OCRmyPDF repara el caso conocido; revise las imágenes. \opt{-{}-output-\allowbreak{}type pdf} si no necesita PDF/A.\\
 		\texttt{ImportError} al arrancar & Paquetes de Python mezclados (\cmd{sudo pip}). & Ver sección~\ref{sec:pep668}; reinstale con \cmd{apt}.\\
 	\end{errores}
 	
@@ -3810,6 +3831,7 @@ gs -dPDFA=2 -dPDFACompatibilityPolicy=1 -sColorConversionStrategy=RGB \
 			\item La reducción de tamaño no está garantizada.
 			\item Las fuentes no incrustadas se sustituyen por otras disponibles (avisos de fuente no encontrada).
 			\item Rasterizar a alta resolución consume mucha memoria y disco.
+			\item Ghostscript~10.6 (el de Ubuntu~26.04) puede truncar datos JPEG al reescribir un PDF, según advierten las notas de OCRmyPDF~16.13 (sección~\ref{sec:ocrmypdf}): tras reducir un PDF con fotografías, revise las imágenes del resultado.
 			\item Opciones numerosas y poco intuitivas; los preajustes cambian muchos parámetros a la vez.
 		\end{itemize}
 	\end{limitacion}
@@ -4094,7 +4116,7 @@ gs -sDEVICE=pdfwrite -o reparado_gs.pdf doc.pdf
 pdftocairo -pdf doc.pdf reparado_cairo.pdf
 # 5) Verificar el resultado
 qpdf --check reparado.pdf && pdftotext -l 1 reparado.pdf - | head
-pdftoppm -png -r 72 -f 1 -l 1 reparado.pdf control && explorer.exe control-1.png
+pdftoppm -png -r 72 -f 1 -l 1 -singlefile reparado.pdf control && explorer.exe control.png
 \end{lstlisting}
 	
 	\textbf{Por qué así:} Poppler informa sin modificar nada; QPDF repara estructura sin riesgo para el contenido; Ghostscript y Cairo reinterpretan (más agresivos, más capaces con daños de contenido). Se avanza de lo menos a lo más invasivo.
@@ -4307,7 +4329,7 @@ chmod +x masivo.sh
 		Redimensionar al 50\,\% & \cmd{magick imagen.png -resize 50\% salida.png}\\
 		Escala de grises & \cmd{magick foto.jpg -colorspace Gray gris.jpg}\\
 		Lote a otra carpeta & \cmd{magick mogrify -path web -resize "1600x1600>" *.jpg}\\
-		Imagen $\rightarrow$ SVG & \cmd{magick logo.png -threshold 50\% logo.pbm \&\& potrace logo.pbm -s -o logo.svg}\\
+		Imagen $\rightarrow$ SVG & \cmd{magick logo.png -colorspace Gray -threshold 50\% logo.pbm \&\& potrace logo.pbm -s -o logo.svg}\\
 		\multicolumn{2}{l}{\textbf{\color{acento}Documentos}}\\
 		Markdown $\rightarrow$ DOCX & \cmd{pandoc doc.md -o doc.docx}\\
 		Markdown $\rightarrow$ PDF & \cmd{pandoc doc.md -o doc.pdf -M lang=\allowbreak{}es}\\
