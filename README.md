@@ -57,7 +57,7 @@ El código fuente está en `src/guia-herramientas.tex` y se compila con pdfLaTeX
 sudo apt install make latexmk texlive-latex-recommended texlive-latex-extra \
     texlive-fonts-recommended texlive-lang-spanish lmodern
 
-git clone 
+git clone https://github.com/Angel7Ojeda/guia-comandos-pdf-linux.git
 cd guia-comandos-pdf-linux
 make            # genera build/guia-herramientas.pdf
 make test       # prueba de humo (requiere las herramientas de la guía)
