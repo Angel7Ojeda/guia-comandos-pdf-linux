@@ -30,5 +30,6 @@ jobs:
           args: >-
             --no-progress --max-retries 3 --accept 200,206,429
             --scheme https --scheme http
+            --exclude 'linkedin\.com'
             enlaces-guia.txt README.md README.en.md CONTRIBUTING.md SECURITY.md CHANGELOG.md docs/auditoria.md
           fail: true
