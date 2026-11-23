@@ -907,6 +907,7 @@ gs --version  # Ghostscript: solo el número; gs -h muestra además los disposit
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Script de comprobación general}
 	
+	% prueba: comprobacion-general
 	\begin{lstlisting}
 for c in pdfinfo pdftoppm pdftotext img2pdf magick potrace mkbitmap pandoc \
     qpdf ocrmypdf tesseract gs; do
@@ -1105,6 +1106,7 @@ done
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Plantilla robusta para procesos por lotes}\label{sec:plantilla-lote}
 	
+	% prueba: lote.sh
 	\begin{lstlisting}
 #!/usr/bin/env bash
 # lote.sh - procesa todos los PDF de ENTRADA y deja los resultados en SALIDA
@@ -2888,6 +2890,7 @@ pandoc informe.md -o informe.odt
 pandoc informe.md -t plain -o informe.txt
 \end{lstlisting}
 	
+	% prueba: pdf-es.yaml
 	\begin{lstlisting}
 # Configuración reutilizable con un archivo de valores por defecto
 cat > pdf-es.yaml <<'EOF'
@@ -4042,6 +4045,7 @@ marker_single escaneo_ocr.pdf --output_dir md --disable_ocr
 	
 	\flujo{doc.pdf,Poppler (pdftoppm),PNG por página,ImageMagick (mogrify),PNG procesados,img2pdf,doc\_procesado.pdf}
 	
+	% prueba: flujo3
 	\begin{lstlisting}
 mkdir -p pags proc
 pdftoppm -png -r 300 doc.pdf pags/p                        # 1) rasterizar
@@ -4058,6 +4062,7 @@ img2pdf --imgsize 300dpi proc/*.png -o doc_procesado.pdf
 	
 	\flujo{logo.png,ImageMagick,logo.pbm (blanco y negro),Potrace,logo.svg / logo.pdf}
 	
+	% prueba: flujo4
 	\begin{lstlisting}
 magick logo.png -colorspace Gray -threshold 50% logo.pbm   # 1) blanco y negro
 potrace logo.pbm -s -t 4 -o logo.svg                       # 2) vector SVG
@@ -4071,6 +4076,7 @@ potrace logo.pbm -b pdf -o logo.pdf                        # o PDF para LaTeX
 	
 	\flujo{informe.md,Pandoc,informe.tex,latexmk / xelatex,informe.pdf}
 	
+	% prueba: flujo5
 	\begin{lstlisting}
 # Vía directa (Pandoc llama al motor y borra los intermedios)
 pandoc informe.md -o informe.pdf --toc -N -M lang=es -V geometry:margin=2.5cm
@@ -4087,6 +4093,7 @@ latexmk -pdf informe.tex        # o latexmk -xelatex si usa fuentes del sistema
 	
 	Antes de optimizar, averigüe \emph{por qué} pesa el PDF:
 	
+	% prueba: flujo6-diagnostico
 	\begin{lstlisting}
 pdfinfo doc.pdf | grep -E 'Pages|File size|Optimized'
 # ¿muchas imágenes, de alta resolución (x-ppi)?
@@ -4107,6 +4114,7 @@ pdffonts doc.pdf  # ¿fuentes completas sin subconjunto (sub = no)?
 	\end{longtable}
 	\endgroup
 	
+	% prueba: flujo6-estrategias
 	\begin{lstlisting}
 # Probar las tres estrategias y quedarse con la más pequeña (revisando la calidad)
 qpdf --object-streams=generate --recompress-flate --compression-level=9 doc.pdf \
@@ -4143,6 +4151,7 @@ pdftoppm -png -r 72 -f 1 -l 1 -singlefile reparado.pdf control && explorer.exe c
 	
 	\flujo{fotos o escaneos JPG/PNG,img2pdf,escaneo.pdf,OCRmyPDF (OCR + limpieza + -O 2),escaneo\_ocr.pdf (buscable y ligero)}
 	
+	% prueba: flujo8
 	\begin{lstlisting}
 img2pdf --pagesize A4 --rotation=ifvalid escaneos/*.jpg -o escaneo.pdf
 ocrmypdf -l spa --rotate-pages --deskew --clean -O 2 \
@@ -4162,6 +4171,7 @@ ls -lh escaneo.pdf escaneo_ocr.pdf
 	
 	\flujo{escaneado.pdf,pdftoppm (gris{,} 300 ppp),PNG,ImageMagick (limpieza),PNG limpios,img2pdf + OCRmyPDF,limpio\_ocr.pdf}
 	
+	% prueba: flujo9
 	\begin{lstlisting}
 mkdir -p r l
 pdftoppm -gray -r 300 -png escaneado.pdf r/p
@@ -4174,6 +4184,7 @@ img2pdf --imgsize 300dpi l/*.png | ocrmypdf -l spa - limpio_ocr.pdf
 	
 	Este script recorre una carpeta de PDF, aplica OCR solo a las páginas escaneadas, extrae el texto y, opcionalmente, convierte a Markdown con Marker. Registra los errores y puede reanudarse.
 
+	% prueba: masivo.sh
 	\begin{lstlisting}
 #!/usr/bin/env bash
 # masivo.sh - OCR selectivo + texto + Markdown para todos los PDF de ENTRADA
