@@ -26,7 +26,7 @@ jobs:
             texlive-fonts-recommended texlive-lang-spanish lmodern \
             texlive-xetex fonts-dejavu-core
           apt-get install -y poppler-utils img2pdf imagemagick potrace pandoc \
-            qpdf ocrmypdf tesseract-ocr-spa ghostscript unpaper pngquant jbig2
+            qpdf ocrmypdf tesseract-ocr-spa ghostscript unpaper pngquant jbig2 shellcheck
 
       - name: Descargar el repositorio
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

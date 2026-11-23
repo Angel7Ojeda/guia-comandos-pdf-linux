@@ -345,7 +345,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 \newcommand{\bs}{\textbackslash{}}    % barra invertida en el texto
 \newcommand{\tl}{\textasciitilde{}}  % virgulilla (~) en el texto
 % Versión publicada: debe coincidir con la etiqueta de Git vX.Y.Z (lo comprueba la publicación automática).
-\newcommand{\versionguia}{1.0.0}
+\newcommand{\versionguia}{1.0.1}
 
 % =====================================================================
 \begin{document}
@@ -411,7 +411,7 @@ headheight=15pt,headsep=0.75cm,footskip=1.1cm]{geometry}
 		{\small\color{collimit}Las opciones documentadas se contrastaron con la ayuda integrada de cada programa, sus páginas \texttt{man}, el código o la documentación oficial de cada proyecto. Si su sistema muestra otra versión, compruébela con los comandos de la sección~\ref{sec:instalacion}.}
 		
 		\vspace{0.4cm}
-		{\sffamily\color{acento}Versión \versionguia{} · Octubre de 2026}\par\smallskip
+		{\sffamily\color{acento}Versión \versionguia{} · Noviembre de 2026}\par\smallskip
 		{\footnotesize\color{collimit}© 2026 Angel David Ojeda Peralta · Licencia CC BY-NC-SA 4.0\\ Venta y uso comercial solo con autorización escrita del autor.\\ \url{https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es}\par}
 	\end{titlepage}
 	
@@ -907,6 +907,7 @@ gs --version  # Ghostscript: solo el número; gs -h muestra además los disposit
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Script de comprobación general}
 	
+	% prueba: comprobacion-general
 	\begin{lstlisting}
 for c in pdfinfo pdftoppm pdftotext img2pdf magick potrace mkbitmap pandoc \
     qpdf ocrmypdf tesseract gs; do
@@ -1012,7 +1013,7 @@ pdftoppm [opciones] <archivo.pdf> <prefijo_de_salida>
 	\subsection{Numeración de páginas}
 	
 	\begin{importante}[Páginas desde 0 o desde 1]
-		Poppler, QPDF, Ghostscript, OCRmyPDF e ImageMagick numeran de forma distinta. Poppler, QPDF, Ghostscript y OCRmyPDF cuentan las páginas desde~1. \textbf{Marker} (\opt{-{}-page\_range}) e \textbf{ImageMagick} (\arch{doc.pdf[0]}) cuentan desde~0. Así, la «página 1» del documento es \val{1} en \cmd{pdftoppm -f 1} pero \val{0} en \cmd{marker\_\allowbreak{}single -{}-page\_\allowbreak{}range 0}.
+		No todas las herramientas numeran igual. Poppler, QPDF, Ghostscript y OCRmyPDF cuentan las páginas desde~1. \textbf{Marker} (\opt{-{}-page\_range}) e \textbf{ImageMagick} (\arch{doc.pdf[0]}) cuentan desde~0. Así, la «página 1» del documento es \val{1} en \cmd{pdftoppm -f 1} pero \val{0} en \cmd{marker\_\allowbreak{}single -{}-page\_\allowbreak{}range 0}.
 	\end{importante}
 	
 	% =====================================================================
@@ -1105,6 +1106,7 @@ done
 	\necesitaespacio{6\baselineskip}
 	\subsubsection{Plantilla robusta para procesos por lotes}\label{sec:plantilla-lote}
 	
+	% prueba: lote.sh
 	\begin{lstlisting}
 #!/usr/bin/env bash
 # lote.sh - procesa todos los PDF de ENTRADA y deja los resultados en SALIDA
@@ -1352,9 +1354,9 @@ marker_single [opciones] <archivo>
 		\opt{-{}-disable\_ocr} & Sin VLM: solo texto incrustado. No arranca el servidor.\\
 		\opt{-{}-force\_ocr} & Reconoce todo el documento con el VLM, aunque tenga texto. Útil con texto incrustado corrupto (caracteres extraños) y para máxima calidad matemática. Mucho más lento en CPU.\\
 		\opt{-{}-strip\_\allowbreak{}existing\_\allowbreak{}ocr} & Elimina la capa OCR que ya tuviera el PDF y vuelve a reconocer con surya.\\
-		\opt{-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math true|\allowbreak{}false} & Reconoce las fórmulas en línea de los párrafos. Por defecto es «automático» (activado solo en \val{balanced}). \textbf{Requiere el valor} \val{true} o \val{false}: escribir solo \opt{-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math} provoca un error.\\
+		\opt{-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math true|\allowbreak{}false} & Reconoce las fórmulas en línea de los párrafos. Por defecto es «automático» (activado solo en \val{balanced}). \textbf{Escriba siempre el valor}: sin él, Marker~2.0.0 toma como valor lo que venga detrás. Si es el archivo, da error; si es otra opción o el final de la orden, deja la opción en automático sin avisar, como si la hubiera omitido.\\
 		\opt{-{}-disable\_\allowbreak{}image\_\allowbreak{}extraction} & No guarda las imágenes. Con \opt{-{}-use\_llm}, las sustituye por una descripción textual.\\
-		\opt{-{}-paginate\_\allowbreak{}output} & Separa las páginas en la salida con su número seguido de una línea de 48 guiones.\\
+		\opt{-{}-paginate\_\allowbreak{}output} & En Markdown, antes de cada página escribe una línea con su número entre llaves seguido de 48 guiones, sin espacio: \texttt{\{0\}-{}-{}-}\ldots{} Las páginas se numeran desde 0.\\
 		\opt{-{}-keep\_\allowbreak{}pageheader\_\allowbreak{}in\_\allowbreak{}output} & Conserva los encabezados de página (por defecto se eliminan). Su pareja es \opt{-{}-keep\_\allowbreak{}pagefooter\_\allowbreak{}in\_\allowbreak{}output}.\\
 		\opt{-{}-use\_llm} & Modo híbrido con un LLM externo (sección~\ref{sec:marker-llm}).\\
 		\opt{-{}-converter\_\allowbreak{}cls CLASE} & \val{marker.converters.pdf.PdfConverter} (predeterminado) o \val{marker.converters.table.TableConverter} (solo tablas).\\
@@ -1461,7 +1463,7 @@ marker ~/trabajo/pdf --output_dir ~/trabajo/md --disable_ocr --workers 4
 	\end{advertencia}
 	
 	\necesitaespacio{29\baselineskip}
-	\subsection{Variables de entorno útiles}
+	\subsection{Variables de entorno útiles}\label{sec:marker-variables}
 	
 	\necesitaespacio{25\baselineskip}
 	\begin{opciones}[Variable]
@@ -1469,7 +1471,7 @@ marker ~/trabajo/pdf --output_dir ~/trabajo/md --disable_ocr --workers 4
 		\texttt{SURYA\_\allowbreak{}INFERENCE\_\allowbreak{}BACKEND} & \val{llamacpp} o \val{vllm}; sin definir, se elige automáticamente.\\
 		\texttt{SURYA\_\allowbreak{}INFERENCE\_\allowbreak{}KEEP\_\allowbreak{}ALIVE} & Con \val{true}, el servidor sigue funcionando al terminar, y las conversiones siguientes no esperan a que arranque. Deténgalo después con \cmd{pkill llama-\allowbreak{}server}.\\
 		\texttt{SURYA\_\allowbreak{}INFERENCE\_\allowbreak{}URL} & Usa un servidor ya en marcha (\val{http:/\allowbreak{}/\allowbreak{}host:puerto/\allowbreak{}v1}) en lugar de arrancar uno.\\
-		\texttt{SURYA\_\allowbreak{}INFERENCE\_\allowbreak{}PARALLEL} & Número de peticiones simultáneas al servidor; por defecto se calcula solo.\\
+		\texttt{SURYA\_\allowbreak{}INFERENCE\_\allowbreak{}PARALLEL} & Peticiones simultáneas al servidor. Con llama.cpp vale \val{8} si no se define, y cada petición reserva memoria para 12\,288 tokens de contexto; con vLLM se ajusta a la capacidad del servidor. En equipos con poca memoria, \val{1} (véase el aviso más abajo).\\
 		\texttt{TORCH\_DEVICE} & Dispositivo de los modelos pequeños (\val{cpu} o \val{cuda}); no afecta al VLM.\\
 		\texttt{MODEL\_\allowbreak{}CACHE\_\allowbreak{}DIR}, \texttt{HF\_HOME} & Cambian las carpetas de caché de modelos (útil si el disco de Linux tiene poco espacio).\\*
 		\texttt{VLLM\_GPUS}, \texttt{VLLM\_\allowbreak{}GPU\_\allowbreak{}TYPE} & Solo backend vLLM: GPU que se usan y modelo de GPU (ajusta la memoria reservada).\\
@@ -1481,6 +1483,20 @@ export SURYA_INFERENCE_KEEP_ALIVE=true
 marker_single a.pdf --output_dir md
 marker_single b.pdf --output_dir md
 pkill llama-server          # detenerlo al terminar
+\end{lstlisting}
+
+	\begin{advertencia}[Equipos con poca memoria]
+		Si no se define \texttt{SURYA\_\allowbreak{}INFERENCE\_\allowbreak{}PARALLEL}, \cmd{llama-server} reserva memoria para 8 peticiones simultáneas. En WSL2 con 3,5 GB de memoria, eso basta para que el servidor se cierre a mitad de la conversión: Marker muestra \texttt{Inference error: Connection error.}, deja el Markdown vacío y termina con código 0, como si todo hubiera ido bien. Con el valor \val{1}, la misma conversión se completa, aunque despacio: unos 3 minutos por página en un equipo de 6 núcleos sin GPU. Si el servidor falla, consulte su registro en \arch{\tl/\allowbreak{}.cache/\allowbreak{}datalab/\allowbreak{}surya/\allowbreak{}llamacpp\_\allowbreak{}server.log}.
+
+		En Marker~2.0.0, \cmd{marker\_single} deja en marcha al terminar los servidores auxiliares de Surya: \texttt{surya.\allowbreak{}fast\_layout.\allowbreak{}server} y, salvo con \opt{-{}-disable\_ocr}, \texttt{surya.\allowbreak{}ocr\_error.\allowbreak{}server}, de 0,4 a 0,9 GB de memoria cada uno. Puede cerrarlos sin miedo con la orden \cmd{pkill} de abajo, siempre que no haya otra conversión en marcha: Marker vuelve a arrancarlos en la siguiente.
+	\end{advertencia}
+
+	\begin{lstlisting}
+# Equipos con poca memoria: una petición a la vez
+export SURYA_INFERENCE_PARALLEL=1
+marker_single doc.pdf --output_dir md
+# después, cerrar los servidores auxiliares de Surya
+pkill -f 'marker-env/bin/python.* -m surya\.'
 \end{lstlisting}
 	
 	\necesitaespacio{20\baselineskip}
@@ -1573,11 +1589,13 @@ marker_server --port 8001
 		\texttt{marker\_\allowbreak{}single: command not found} & El entorno virtual no está activo. & \cmd{source \tl/\allowbreak{}marker-\allowbreak{}env/\allowbreak{}bin/\allowbreak{}activate}.\\*
 		\texttt{llama-\allowbreak{}server binary not found} & Marker necesita el VLM y no encuentra \cmd{llama-server}. & Defina \texttt{LLAMA\_\allowbreak{}CPP\_\allowbreak{}BINARY} o instale \texttt{llama.cpp-\allowbreak{}tools}; o use \opt{-{}-disable\_ocr}.\\
 		\texttt{docker binary not found} & Marker detectó una GPU NVIDIA y eligió vLLM, pero no hay Docker. & \texttt{export SURYA\_\allowbreak{}INFERENCE\_\allowbreak{}BACKEND=\allowbreak{}llamacpp}, o instale Docker y NVIDIA Container Toolkit.\\
-		\texttt{Option '-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math' requires an argument} & La opción no es un interruptor. & Escriba \opt{-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math true}.\\
+		\texttt{Invalid value for \textquotesingle{}-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math\textquotesingle{}: \textquotesingle{}doc.pdf\textquotesingle{} is not a valid boolean} & \opt{-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math} sin valor delante del archivo: Marker toma el nombre del archivo como valor. & Escriba \opt{-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math true} o \val{false}.\\
 		\texttt{No such option} & Opción mal escrita o de otra versión. & \cmd{marker\_\allowbreak{}single config -{}-help} lista las opciones de su versión.\\
 		No encuentra los resultados & No se indicó \opt{-{}-output\_dir}. & Repita con \opt{-{}-output\_dir}; los anteriores están en \arch{conversion\_\allowbreak{}results} dentro de \arch{\tl/\allowbreak{}marker-\allowbreak{}env/\allowbreak{}lib/\allowbreak{}python3.12/\allowbreak{}site-\allowbreak{}packages}.\\
-		Fórmulas o texto ilegibles & Texto incrustado defectuoso o modo \val{fast} sin reconocimiento matemático. & \opt{-{}-force\_ocr} o \opt{-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math true}.\\
+		Fórmulas o texto ilegibles & Texto incrustado defectuoso o modo \val{fast} sin reconocimiento matemático (también si escribió \opt{-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math} sin valor y Marker no dio error). & \opt{-{}-force\_ocr} o \opt{-{}-ocr\_\allowbreak{}inline\_\allowbreak{}math true}.\\
 		\texttt{Killed} o \texttt{MemoryError} & Memoria insuficiente en WSL2. & Menos \opt{-{}-workers}, dividir el PDF, aumentar la memoria en \arch{.wslconfig}.\\
+		\texttt{Inference error: Connection error.} y Markdown vacío & \cmd{llama-server} se cerró, por ejemplo por falta de memoria; Marker termina igualmente con código 0. & Con poca memoria, \texttt{export SURYA\_\allowbreak{}INFERENCE\_\allowbreak{}PARALLEL=\allowbreak{}1}; la causa queda en el registro del servidor (sección~\ref{sec:marker-variables}).\\
+		Memoria ocupada después de terminar & Servidores auxiliares de Surya que siguen en marcha. & Ciérrelos con \cmd{pkill} (aviso «Equipos con poca memoria», sección~\ref{sec:marker-variables}).\\
 		Primera ejecución muy lenta & Descarga de modelos y arranque del servidor. & Normal; pruebe primero con \opt{-{}-page\_\allowbreak{}range "0-\allowbreak{}1"}.\\
 		Errores en un lote con \cmd{marker} & Archivos que no son documentos en la carpeta. & Deje solo PDF; elimine \arch{*:Zone.Identifier}.\\*
 		Error al abrir un PDF cifrado & Contraseña de apertura. & Descifre con \cmd{qpdf -{}-password=\allowbreak{}... -{}-decrypt}.\\
@@ -2150,7 +2168,7 @@ img2pdf --pagesize A4 escaneo_*.png | ocrmypdf -l spa - escaneo_ocr.pdf
 		Colores invertidos & JPEG CMYK de Adobe. & \opt{-C CMYK;I}.\\
 		\texttt{DecompressionBombError} & Imagen con demasiados píxeles. & Si es de confianza, \opt{-{}-pillow-\allowbreak{}limit-\allowbreak{}break}.\\
 		\texttt{Argument list too long} & Demasiados archivos en la orden. & \opt{-{}-from-file} con \cmd{find -print0}.\\*
-		La orden se queda esperando & Sin imágenes en la orden (por ejemplo, un comodín sin coincidencias con \cmd{nullglob}), img2pdf lee de la entrada estándar. & \tecla{Ctrl}+\tecla{C}; revise el patrón con \cmd{ls}.\\
+		La orden se queda esperando tras \texttt{Reading image from standard input...} & Sin imágenes en la orden (por ejemplo, un comodín sin coincidencias con \cmd{nullglob}), img2pdf lee de la entrada estándar. & \tecla{Ctrl}+\tecla{C}; revise el patrón con \cmd{ls}.\\
 	\end{errores}
 	
 	Ayuda: \cmd{img2pdf -{}-help} (incluye la tabla de tamaños de papel). Versión: \cmd{img2pdf -{}-version}.
@@ -2691,12 +2709,12 @@ potrace firma.bmp -s -o firma.svg                   # BMP también se admite
 	\necesitaespacio{17\baselineskip}
 	\begin{formatos}
 		PBM & \compat & \nocompat & Formato ideal: 1 bit, sin ambigüedad.\\*
-		PGM, PPM & \compat & \nocompat & Se umbralizan con \opt{-k} (0,5 por defecto).\\
+		PGM & \compat & \compat & Como entrada, se umbraliza con \opt{-k} (0,5 por defecto); como salida (\opt{-g}), Potrace rasteriza las curvas suavizadas.\\
+		PPM & \compat & \nocompat & Se umbraliza con \opt{-k}, como PGM.\\
 		BMP & \compat & \nocompat & Admitido directamente.\\
 		PNG, JPEG, TIFF & \nocompat & \nocompat & Convertir antes con ImageMagick.\\
 		SVG, PDF, EPS, PS & \nocompat & \compat & Salidas vectoriales.\\
-		DXF, GeoJSON, GIMP, XFig & \nocompat & \compat & Salidas para otros programas.\\*
-		PGM & \compat & \compat & También como salida rasterizada suavizada.\\
+		DXF, GeoJSON, GIMP, XFig & \nocompat & \compat & Salidas para otros programas.\\
 	\end{formatos}
 	
 	\necesitaespacio{8\baselineskip}
@@ -2872,6 +2890,7 @@ pandoc informe.md -o informe.odt
 pandoc informe.md -t plain -o informe.txt
 \end{lstlisting}
 	
+	% prueba: pdf-es.yaml
 	\begin{lstlisting}
 # Configuración reutilizable con un archivo de valores por defecto
 cat > pdf-es.yaml <<'EOF'
@@ -3549,6 +3568,7 @@ done
 		Muy lento o \texttt{Killed} & Muchas páginas en paralelo, memoria limitada de WSL2. & Baje \opt{-{}-jobs}; aumente memoria en \arch{.wslconfig}.\\
 		Archivo resultante mayor que el original & Conversión a PDF/A o imágenes recomprimidas sin pérdida. & \opt{-{}-output-\allowbreak{}type pdf}, \opt{-O 2}/\opt{-O 3}, o Ghostscript después.\\
 		Páginas giradas por error & Detección de orientación con poca confianza. & Suba \opt{-{}-rotate-\allowbreak{}pages-\allowbreak{}threshold} o quite \opt{-r}.\\*
+		\texttt{[tesseract] Too few characters. Skipping this page} y \texttt{Error during processing.} & Con \opt{-{}-rotate-\allowbreak{}pages}, la página tiene muy poco texto para detectar su orientación y se deja sin girar (\texttt{confidence 0.00 - no change}). El OCR se hace igualmente y el código de salida es 0. & Es un aviso: compruebe el texto con \cmd{pdftotext}.\\*
 		\texttt{Ghostscript 10.6.x contains JPEG encoding errors\ldots} & Aviso informativo: Ubuntu~26.04 incluye Ghostscript~10.06. & OCRmyPDF repara el caso conocido; revise las imágenes. \opt{-{}-output-\allowbreak{}type pdf} si no necesita PDF/A.\\
 		\texttt{ImportError} al arrancar & Paquetes de Python mezclados (\cmd{sudo pip}). & Ver sección~\ref{sec:pep668}; reinstale con \cmd{apt}.\\
 	\end{errores}
@@ -3612,7 +3632,7 @@ gs [opciones] -sDEVICE=<dispositivo> -o <salida> <entrada> [<entrada2> ...]
 		\opt{-dTextAlphaBits=\allowbreak{}4}, \opt{-dGraphicsAlphaBits=\allowbreak{}4} & Suavizado de texto y gráficos en dispositivos de imagen.\\
 	\end{opciones}
 	
-	\paragraph{Una imagen por página} En dispositivos de imagen, el nombre de salida debe llevar un marcador de número de página: \arch{pag-\%03d.png} produce \arch{pag-001.png}, \arch{pag-002.png}\ldots{} Sin marcador, cada página sobrescribe a la anterior y solo queda la última.
+	\paragraph{Una imagen por página} En dispositivos de imagen, el nombre de salida debe llevar un marcador de número de página: \arch{pag-\%03d.png} produce \arch{pag-001.png}, \arch{pag-002.png}\ldots{} Sin marcador, Ghostscript escribe todas las páginas en un mismo archivo. Con TIFF, el resultado es multipágina (es lo que busca el ejemplo de \val{tiffg4} más abajo); con PNG, las imágenes quedan una tras otra y los visores solo muestran la primera.
 	
 	\necesitaespacio{34\baselineskip}
 	\subsection{Dispositivos principales}
@@ -3844,7 +3864,7 @@ gs -dPDFA=2 -dPDFACompatibilityPolicy=1 -sColorConversionStrategy=RGB \
 		\texttt{Unknown device} & Nombre de dispositivo mal escrito o no compilado. & \cmd{gs -h} lista los disponibles.\\*
 		\texttt{/\allowbreak{}undefinedfilename} & Archivo inexistente o ruta con espacios sin comillas. & Compruebe con \cmd{ls -l "ruta"}.\\
 		\texttt{/\allowbreak{}invalidfileaccess} & Modo SAFER impidió un acceso a archivo. & Si es legítimo, \opt{-{}-permit-\allowbreak{}file-\allowbreak{}read=}; nunca \opt{-dNOSAFER} con archivos ajenos.\\
-		Solo aparece la última página como imagen & Falta \val{\%d} en el nombre de salida. & Use \arch{pag-\%03d.png}.\\
+		Un único PNG que muestra solo la primera página & Falta \val{\%d} en el nombre de salida: todas las páginas van al mismo archivo. & Use \arch{pag-\%03d.png}.\\
 		Se queda en el indicador \texttt{GS>} & Faltan \opt{-dBATCH} y \opt{-dNOPAUSE}. & Use \opt{-o}, o escriba \texttt{quit}.\\
 		PDF mayor que el original & Contenido ya optimizado o recompresión desfavorable. & Otro preajuste, QPDF sin pérdida, o conserve el original.\\
 		Imágenes borrosas tras comprimir & Preajuste demasiado agresivo (\val{/screen}). & \val{/ebook} o \val{/printer}, o resolución a medida.\\
@@ -4025,6 +4045,7 @@ marker_single escaneo_ocr.pdf --output_dir md --disable_ocr
 	
 	\flujo{doc.pdf,Poppler (pdftoppm),PNG por página,ImageMagick (mogrify),PNG procesados,img2pdf,doc\_procesado.pdf}
 	
+	% prueba: flujo3
 	\begin{lstlisting}
 mkdir -p pags proc
 pdftoppm -png -r 300 doc.pdf pags/p                        # 1) rasterizar
@@ -4041,6 +4062,7 @@ img2pdf --imgsize 300dpi proc/*.png -o doc_procesado.pdf
 	
 	\flujo{logo.png,ImageMagick,logo.pbm (blanco y negro),Potrace,logo.svg / logo.pdf}
 	
+	% prueba: flujo4
 	\begin{lstlisting}
 magick logo.png -colorspace Gray -threshold 50% logo.pbm   # 1) blanco y negro
 potrace logo.pbm -s -t 4 -o logo.svg                       # 2) vector SVG
@@ -4054,6 +4076,7 @@ potrace logo.pbm -b pdf -o logo.pdf                        # o PDF para LaTeX
 	
 	\flujo{informe.md,Pandoc,informe.tex,latexmk / xelatex,informe.pdf}
 	
+	% prueba: flujo5
 	\begin{lstlisting}
 # Vía directa (Pandoc llama al motor y borra los intermedios)
 pandoc informe.md -o informe.pdf --toc -N -M lang=es -V geometry:margin=2.5cm
@@ -4070,6 +4093,7 @@ latexmk -pdf informe.tex        # o latexmk -xelatex si usa fuentes del sistema
 	
 	Antes de optimizar, averigüe \emph{por qué} pesa el PDF:
 	
+	% prueba: flujo6-diagnostico
 	\begin{lstlisting}
 pdfinfo doc.pdf | grep -E 'Pages|File size|Optimized'
 # ¿muchas imágenes, de alta resolución (x-ppi)?
@@ -4090,6 +4114,7 @@ pdffonts doc.pdf  # ¿fuentes completas sin subconjunto (sub = no)?
 	\end{longtable}
 	\endgroup
 	
+	% prueba: flujo6-estrategias
 	\begin{lstlisting}
 # Probar las tres estrategias y quedarse con la más pequeña (revisando la calidad)
 qpdf --object-streams=generate --recompress-flate --compression-level=9 doc.pdf \
@@ -4126,6 +4151,7 @@ pdftoppm -png -r 72 -f 1 -l 1 -singlefile reparado.pdf control && explorer.exe c
 	
 	\flujo{fotos o escaneos JPG/PNG,img2pdf,escaneo.pdf,OCRmyPDF (OCR + limpieza + -O 2),escaneo\_ocr.pdf (buscable y ligero)}
 	
+	% prueba: flujo8
 	\begin{lstlisting}
 img2pdf --pagesize A4 --rotation=ifvalid escaneos/*.jpg -o escaneo.pdf
 ocrmypdf -l spa --rotate-pages --deskew --clean -O 2 \
@@ -4145,6 +4171,7 @@ ls -lh escaneo.pdf escaneo_ocr.pdf
 	
 	\flujo{escaneado.pdf,pdftoppm (gris{,} 300 ppp),PNG,ImageMagick (limpieza),PNG limpios,img2pdf + OCRmyPDF,limpio\_ocr.pdf}
 	
+	% prueba: flujo9
 	\begin{lstlisting}
 mkdir -p r l
 pdftoppm -gray -r 300 -png escaneado.pdf r/p
@@ -4155,8 +4182,9 @@ img2pdf --imgsize 300dpi l/*.png | ocrmypdf -l spa - limpio_ocr.pdf
 	\necesitaespacio{8\baselineskip}
 	\subsection{Flujo 10: procesamiento masivo}\label{sec:flujo10}
 	
-	Este script recorre una carpeta de PDF, detecta si cada uno es escaneado (sin fuentes), aplica OCR solo cuando hace falta, extrae el texto y, opcionalmente, convierte a Markdown con Marker. Registra los errores y puede reanudarse.
-	
+	Este script recorre una carpeta de PDF, aplica OCR solo a las páginas escaneadas, extrae el texto y, opcionalmente, convierte a Markdown con Marker. Registra los errores y puede reanudarse.
+
+	% prueba: masivo.sh
 	\begin{lstlisting}
 #!/usr/bin/env bash
 # masivo.sh - OCR selectivo + texto + Markdown para todos los PDF de ENTRADA
@@ -4174,14 +4202,10 @@ for f in "$ENTRADA"/*.pdf; do
     pdf="$SALIDA/pdf/$b.pdf"
     [ -e "$SALIDA/txt/$b.txt" ] && { echo "Omitido (ya hecho): $b"; continue; }
 
-    nfuentes=$(pdffonts "$f" 2>/dev/null | tail -n +3 | wc -l)
-    if [ "$nfuentes" -eq 0 ]; then
-        echo "OCR: $b"
-        ocrmypdf -q -l spa --rotate-pages --deskew "$f" "$pdf" \
-            || { echo "ERROR ocrmypdf ($?): $b" >> "$LOG"; continue; }
-    else
-        cp "$f" "$pdf"                             # digital: se copia tal cual
-    fi
+    echo "Procesando: $b"
+    # --skip-text: OCR solo en las páginas sin texto (las escaneadas)
+    ocrmypdf -q -l spa --skip-text --rotate-pages --deskew --output-type pdf \
+        "$f" "$pdf" || { echo "ERROR ocrmypdf ($?): $b" >> "$LOG"; continue; }
 
     pdftotext -layout "$pdf" "$SALIDA/txt/$b.txt" || echo "ERROR pdftotext: $b" \
         >> "$LOG"
@@ -4193,11 +4217,12 @@ echo "Terminado. Errores registrados en: $LOG"
 	
 	\begin{lstlisting}
 chmod +x masivo.sh
+mkdir -p ~/trabajo/salida   # la carpeta debe existir antes de tee
 # ver y guardar la salida a la vez
 ./masivo.sh 2>&1 | tee ~/trabajo/salida/consola.log
 \end{lstlisting}
 	
-	\textbf{Por qué así:} \cmd{pdffonts} decide en milisegundos si hace falta OCR, lo que evita procesar de nuevo PDF digitales; las comprobaciones \texttt{[ -e ... ]} permiten reanudar; el ejecutable de Marker se llama con su ruta dentro del entorno, sin necesidad de activarlo en el script. Si no necesita Markdown, elimine las dos líneas de Marker; si los documentos tienen fórmulas, quite \opt{-{}-disable\_ocr}.
+	\textbf{Por qué así:} con \opt{-{}-skip-text}, OCRmyPDF decide página a página: aplica OCR a las escaneadas y lo omite en las que ya tienen texto. Por eso un PDF mixto (páginas digitales y escaneadas) sale con todo su texto; comprobar el documento entero con \cmd{pdffonts} lo daría por digital al ver fuentes y dejaría sin reconocer las escaneadas. La opción \opt{-{}-output-type pdf} omite la conversión a PDF/A para que las copias de \arch{salida/\allowbreak{}pdf} se parezcan lo más posible a los originales, que el script no modifica. OCRmyPDF rechaza los PDF cifrados (código 8) y los firmados digitalmente (código 2; con \opt{-{}-invalidate-\allowbreak{}digital-\allowbreak{}signatures} los procesa, pero la copia pierde la validez de la firma): quedan anotados en el registro, sin texto. La comprobación \texttt{[ -e ... ]} permite reanudar: un documento con su \arch{.txt} se da por hecho, así que, si solo falló Marker, borre ese \arch{.txt} para repetirlo. El ejecutable de Marker se llama con su ruta dentro del entorno, sin necesidad de activarlo en el script. Si no necesita Markdown, elimine las dos líneas de Marker; si los documentos tienen fórmulas, quite \opt{-{}-disable\_ocr} y revise antes la sección~\ref{sec:marker-variables}: con poca memoria, Marker puede dejar el Markdown vacío y terminar con código 0.
 	% =====================================================================
 	\clearpage
 	\section{Tabla de formatos}\label{sec:formatos}

@@ -15,6 +15,8 @@ sudo apt install make latexmk texlive-latex-recommended texlive-latex-extra \
     texlive-fonts-recommended texlive-lang-spanish lmodern
 # opcional, para la prueba de Pandoc con xelatex:
 sudo apt install texlive-xetex fonts-dejavu-core
+# opcional, para revisar los bloques de órdenes:
+sudo apt install shellcheck
 ```
 
 ## Flujo de trabajo
@@ -27,12 +29,18 @@ sudo apt install texlive-xetex fonts-dejavu-core
 
 ## Convenciones de la guía
 
-- **Comandos verificados.** Todo comando nuevo o modificado se prueba con las versiones de Ubuntu 26.04. Si cambia un comando que cubre `tests/smoke.sh`, actualice también la prueba.
+- **Comandos verificados.** Todo comando nuevo o modificado se prueba con las versiones de Ubuntu 26.04. Si cambia un comando que cubre `tests/smoke.sh`, actualice también su comprobación; en los bloques marcados con `% prueba:` no hace falta copiar el comando nuevo, porque `tests/smoke.sh` lo lee de la guía.
+- **Pruebas ligadas a un bloque.** Para probar un bloque tal como aparece en la guía, escriba `% prueba: NOMBRE` en la línea anterior a su `\begin{lstlisting}`. En `tests/smoke.sh`, `bloque NOMBRE` imprime su contenido y `ejecuta NOMBRE` lo lanza con `bash -e`. Todos los bloques de órdenes (sin estilo; véase «Estilos de bloque») pasan también por `shellcheck`.
+- **Pruebas de varias líneas.** En `tests/smoke.sh`, empiécelas con `set -e` y escriba una comprobación por orden. `set -e` no detiene la prueba en `a && b` ni en `! orden`, así que las negaciones van en un `if …; then exit 1; fi`. Guarde en una variable la salida que va a comparar (`s=$(orden)`): dentro de `[ "$(orden)" … ]`, un fallo de la orden pasa inadvertido.
 - **Bloques de código.** El contenido de cada `lstlisting` empieza en la columna 0, sin tabuladores, con 4 espacios por nivel de sangría. Desactive la sangría automática del editor dentro de esos bloques: la sangría se ve en el PDF y, en un *heredoc*, un `EOF` desplazado hace que la orden no termine.
 - **Estilos de bloque.** Sin opción: comandos para copiar. `[style=sintaxis]`: plantillas que el lector adapta. `[style=salida]`: salida de un programa o contenido de un archivo.
 - **Marcado.** `\cmd{}` para programas, `\opt{}` para opciones, `\arch{}` para archivos y rutas, `\val{}` para valores; cajas `nota`, `consejo`, `advertencia`, `importante`, `limitacion` y `ejemplo`.
 - **Sin datos personales.** Las rutas usan `NOMBRE` (usuario de Windows) y `USUARIO` (usuario de Linux), nunca nombres reales.
 - **Fuentes.** Las afirmaciones técnicas se apoyan en la documentación oficial o en la ayuda del programa instalado (`--help`, `man`).
+- **Mensajes reales.** Los mensajes de error y de salida se copian de una ejecución real con las versiones de Ubuntu 26.04; no se traducen ni se reconstruyen de memoria.
+- **Afirmaciones con alcance.** «Siempre», «nunca» y «por defecto» indican su alcance cuando dependen de la versión, del modo o del backend: «con llama.cpp», «en Marker 2.0.0».
+- **Un concepto, un término.** La misma cosa se nombra igual en toda la guía; por ejemplo, «PDF mixto» para el que combina páginas digitales y escaneadas.
+- **Sin relleno.** Cada frase aporta algo que el lector necesita para usar la herramienta.
 
 ## Licencia de las contribuciones
 

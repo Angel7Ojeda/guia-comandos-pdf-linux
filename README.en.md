@@ -3,7 +3,7 @@
 [![Build and test](../../actions/workflows/compilar.yml/badge.svg)](../../actions/workflows/compilar.yml)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
 
-This repository contains a **Spanish-language** reference manual (118 pages, written in LaTeX) for working from the terminal of **Ubuntu 26.04 LTS on WSL2** (Windows 11) with nine open-source tools: Marker, Poppler, img2pdf, ImageMagick, Potrace, Pandoc, QPDF, OCRmyPDF and Ghostscript.
+This repository contains a **Spanish-language** reference manual (119 pages, written in LaTeX) for working from the terminal of **Ubuntu 26.04 LTS on WSL2** (Windows 11) with nine open-source tools: Marker, Poppler, img2pdf, ImageMagick, Potrace, Pandoc, QPDF, OCRmyPDF and Ghostscript.
 
 **[Download the latest PDF](../../releases/latest/download/guia-comandos-pdf-linux.pdf)** · [All releases](../../releases) · [Versión en español](README.md)
 
@@ -13,7 +13,7 @@ Each tool has a chapter with the same structure: purpose and when to use it, ins
 
 ## How it is verified
 
-The commands were tested against the exact package versions shipped by Ubuntu 26.04. On every change, a GitHub Actions workflow builds the PDF and runs a smoke test with 42 checks inside an `ubuntu:26.04` container. Tagged versions are published automatically with the PDF and its SHA-256 checksum. The audit report is in [`docs/auditoria.md`](docs/auditoria.md) (Spanish).
+The commands were tested against the exact package versions shipped by Ubuntu 26.04. On every change, a GitHub Actions workflow builds the PDF inside an `ubuntu:26.04` container and runs the smoke test, which has 80 checks: commands from every chapter, seven of the guide's ten workflows, messages and exit codes quoted in the guide, and `shellcheck` on all 114 command blocks. The container runs 76 of them; the four that need Marker or WSL run only locally. Tagged versions are published automatically with the PDF and its SHA-256 checksum. The audit report is in [`docs/auditoria.md`](docs/auditoria.md) (Spanish).
 
 ## Building
 
@@ -26,7 +26,7 @@ make test     # smoke test (requires the tools described in the guide)
 
 ## Language
 
-The guide is written in Spanish, and there is no full English translation: keeping two 118-page versions in sync would make them drift apart. Issues and pull requests in English are welcome.
+The guide is written in Spanish, and there is no full English translation: keeping two 119-page versions in sync would make them drift apart. Issues and pull requests in English are welcome.
 
 ## License
 
