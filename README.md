@@ -13,7 +13,7 @@ La documentación de estas herramientas está repartida en manuales en inglés, 
 
 ## Qué contiene
 
-Cada herramienta tiene un capítulo con la misma estructura: qué es y cuándo conviene usarla, instalación, sintaxis y opciones, ejemplos listos para copiar, formatos admitidos, limitaciones y errores frecuentes. Después vienen las comparaciones entre herramientas, una matriz de operaciones sobre PDF, diez flujos de trabajo que combinan varias de ellas, tablas de formatos, dependencias y comandos, y una referencia rápida. En total, 118 páginas.
+Cada herramienta tiene un capítulo con la misma estructura: qué es y cuándo conviene usarla, instalación, sintaxis y opciones, ejemplos listos para copiar, formatos admitidos, limitaciones y errores frecuentes. Después vienen las comparaciones entre herramientas, una matriz de operaciones sobre PDF, diez flujos de trabajo que combinan varias de ellas, tablas de formatos, dependencias y comandos, y una referencia rápida. En total, 119 páginas.
 
 | Herramienta | Para qué sirve | Versión verificada |
 |---|---|---|
@@ -68,9 +68,9 @@ La compilación se detiene si queda alguna referencia interna sin resolver. Los 
 
 ## Cómo se verifica
 
-Cada cambio en la rama `main` y cada solicitud de cambios ejecutan un flujo de GitHub Actions dentro de un contenedor de Ubuntu 26.04, con las mismas versiones que documenta la guía. El flujo compila el PDF y ejecuta `tests/smoke.sh`, una prueba de humo con 42 comprobaciones de comandos representativos de cada capítulo sobre archivos sintéticos. Al subir una etiqueta `vX.Y.Z`, otro flujo publica la versión con el PDF y su suma SHA-256. Una vez por semana se comprueban los enlaces externos.
+Cada cambio en la rama `main` y cada solicitud de cambios ejecutan un flujo de GitHub Actions dentro de un contenedor de Ubuntu 26.04, con las mismas versiones que documenta la guía. El flujo compila el PDF y ejecuta `tests/smoke.sh`, una prueba de humo con 80 comprobaciones sobre archivos sintéticos: comandos representativos de cada capítulo, los flujos de trabajo 3 a 6 y 8 a 10, mensajes y códigos de salida que cita la guía, y un análisis con `shellcheck` de sus 114 bloques de órdenes. La prueba lee del archivo fuente de la guía los scripts y flujos que ejecuta tal cual, así que, si cambia ese código, ejecuta la versión nueva. Al subir una etiqueta `vX.Y.Z`, otro flujo publica la versión con el PDF y su suma SHA-256. Una vez por semana se comprueban los enlaces externos.
 
-Dos partes no se automatizan: Marker, cuyos modelos ocupan varios gigabytes, y los comandos que dependen de Windows (`explorer.exe`, `wslpath`). El informe [`docs/auditoria.md`](docs/auditoria.md) describe cómo se verificó la guía, qué se corrigió y qué queda fuera de las pruebas.
+En GitHub Actions se ejecutan 76 de esas 80 comprobaciones. Se omiten las cuatro que necesitan un entorno que el contenedor no tiene: las tres de Marker, que requieren el entorno `~/marker-env` (unos 2 GB con su caché de modelos), y la de `wslpath`, que solo existe en WSL. `make test` las ejecuta en local cuando encuentra ese entorno. No se prueban el flujo 1 (recurre al modelo de visión de Marker), el flujo 2 (pendiente; véase la hoja de ruta) ni el flujo 7 (abre el Explorador de Windows). El informe [`docs/auditoria.md`](docs/auditoria.md) describe cómo se verificó la guía, qué se corrigió y qué queda fuera de las pruebas.
 
 ## Estructura del repositorio
 
@@ -93,7 +93,7 @@ Los avisos de errores, las correcciones y las propuestas son bienvenidos. [`CONT
 
 ## Hoja de ruta
 
-- Ampliar la prueba de humo a más ejemplos de cada capítulo.
+- Ampliar la prueba de humo a más ejemplos de cada capítulo y añadir el flujo 2 a las comprobaciones de Marker que se ejecutan en local.
 - Revisar la guía cuando Ubuntu actualice alguna herramienta o se publiquen nuevas versiones de Marker 2.
 - Valorar una versión HTML navegable si resulta útil para quienes la leen.
 
